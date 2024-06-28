@@ -497,9 +497,9 @@ namespace SilkRoad.DbCmd_DT01
         {
             string queryStatements = "USE " + wage_db + " "
                                    + ""
-							       + "INSERT INTO DBO.MSTEMBS(EMBSSABN, EMBSNAME, EMBSCNAM, EMBSENAM, EMBSJMNO, EMBSTLNO, EMBSHPNO, EMBSADR1, EMBSADR2, EMBSPOST, EMBSSTAT, EMBSIPDT, EMBSGRDT, EMBSTSDT, EMBSGLCD, EMBSDPCD, EMBSSTCD, EMBSJOCD, EMBSPSCD, EMBSJDCD, EMBSGRCD, EMBSHOBO, EMBSSHDT, EMBSDF01, EMBSDF02, EMBSDF03, EMBSDF04, EMBSDF05, EMBSFRD1, EMBSTOD1, EMBSFRD2, EMBSTOD2, EMBSFRD3, EMBSTOD3, EMBSGSYN, EMBSPICT, EMBSIDEN, EMBSPSWD, EMBSEMAL, EMBSDTGB, EMBSGSDT, EMBSGMCD, EMBSREMK, PHOTO, YC_TYPE, EMBSADGB, EMBSPTSA, EMBSPTLN, EMBSPHPN, EMBSPAD1, EMBSPAD2, EMBSSIG1, EMBSSIG2, EMBSSIG3, EMBSSIG4, EMBSSIG5, EMBSINDT, EMBSUPDT, EMBSUSID, EMBSPSTY"
-                                   + ") VALUES (@EMBSSABN, @EMBSNAME, '', '', '', '', '', '', '', @EMBSPOST, @EMBSSTAT, @EMBSIPDT, '', @EMBSTSDT, @EMBSGLCD, @EMBSDPCD, '', @EMBSJOCD, '', '', @EMBSGRCD, @EMBSHOBO, '', '','','','','', '','','','','','', '','', @EMBSIDEN, @EMBSPSWD, @EMBSEMAL, 0, '','', @EMBSREMK, @PHOTO, @YC_TYPE, @EMBSADGB,"
-								   + " ENCRYPTBYPASSPHRASE('samilpas',CAST(LTRIM(RTRIM(@EMBSJMNO)) AS VARCHAR(20))), ENCRYPTBYPASSPHRASE('samilpas',CAST(LTRIM(RTRIM(@EMBSTLNO)) AS VARCHAR(20))), ENCRYPTBYPASSPHRASE('samilpas',CAST(LTRIM(RTRIM(@EMBSHPNO)) AS VARCHAR(20))), ENCRYPTBYPASSPHRASE('samilpas',CAST(LTRIM(RTRIM(@EMBSADR1)) AS VARCHAR(100))), ENCRYPTBYPASSPHRASE('samilpas',CAST(LTRIM(RTRIM(@EMBSADR2)) AS VARCHAR(100))), '','','','','', @EMBSINDT, @EMBSUPDT, @EMBSUSID, @EMBSPSTY"
+							       + "INSERT INTO DBO.MSTEMBS(EMBSSABN, EMBSNAME, EMBSCNAM, EMBSENAM, EMBSJMNO, EMBSTLNO, EMBSHPNO, EMBSADR1, EMBSADR2, EMBSPOST, EMBSSTAT, EMBSIPDT, EMBSGRDT, EMBSTSDT, EMBSGLCD, EMBSDPCD, EMBSSTCD, EMBSJOCD, EMBSPSCD, EMBSJDCD, EMBSGRCD, EMBSHOBO, EMBSSHDT, EMBSDF01, EMBSDF02, EMBSDF03, EMBSDF04, EMBSDF05, EMBSFRD1, EMBSTOD1, EMBSFRD2, EMBSTOD2, EMBSFRD3, EMBSTOD3, EMBSGSYN, EMBSPICT, EMBSIDEN, EMBSPSWD, EMBSEMAL, EMBSDTGB, EMBSGSDT, EMBSGMCD, EMBSDESC, PHOTO, YC_TYPE, EMBSADGB, EMBSPTSA, EMBSPTLN, EMBSPHPN, EMBSPAD1, EMBSPAD2, EMBSSIG1, EMBSSIG2, EMBSSIG3, EMBSSIG4, EMBSSIG5, EMBSINDT, EMBSUPDT, EMBSUSID, EMBSPSTY"
+                                   + ") VALUES (@EMBSSABN, @EMBSNAME, '', '', '', '', '', '', '', @EMBSPOST, @EMBSSTAT, @EMBSIPDT, '', @EMBSTSDT, @EMBSGLCD, @EMBSDPCD, '', @EMBSJOCD, '', '', @EMBSGRCD, @EMBSHOBO, '', '','','','','', '','','','','','', '','', @EMBSIDEN, @EMBSPSWD, @EMBSEMAL, 0, '','', @EMBSDESC, @PHOTO, @YC_TYPE, @EMBSADGB,"
+                                   + " ENCRYPTBYPASSPHRASE('samilpas',CAST(LTRIM(RTRIM(@EMBSJMNO)) AS VARCHAR(20))), ENCRYPTBYPASSPHRASE('samilpas',CAST(LTRIM(RTRIM(@EMBSTLNO)) AS VARCHAR(20))), ENCRYPTBYPASSPHRASE('samilpas',CAST(LTRIM(RTRIM(@EMBSHPNO)) AS VARCHAR(20))), ENCRYPTBYPASSPHRASE('samilpas',CAST(LTRIM(RTRIM(@EMBSADR1)) AS VARCHAR(100))), ENCRYPTBYPASSPHRASE('samilpas',CAST(LTRIM(RTRIM(@EMBSADR2)) AS VARCHAR(100))), '','','','','', @EMBSINDT, @EMBSUPDT, @EMBSUSID, @EMBSPSTY"
                                    + ")";
 
             SqlCommand ocm = new SqlCommand();
@@ -525,7 +525,7 @@ namespace SilkRoad.DbCmd_DT01
             ocm.Parameters.Add("@EMBSIDEN", SqlDbType.VarChar, 15, "EMBSIDEN");
             ocm.Parameters.Add("@EMBSPSWD", SqlDbType.VarChar, 10, "EMBSPSWD");
             ocm.Parameters.Add("@EMBSEMAL", SqlDbType.VarChar, 40, "EMBSEMAL");
-            ocm.Parameters.Add("@EMBSREMK", SqlDbType.VarChar, 400, "EMBSREMK");
+            ocm.Parameters.Add("@EMBSDESC", SqlDbType.VarChar, 400, "EMBSDESC");
             ocm.Parameters.Add("@PHOTO", SqlDbType.VarBinary, -1, "PHOTO");
             ocm.Parameters.Add("@YC_TYPE", SqlDbType.Int, 1, "YC_TYPE");
             ocm.Parameters.Add("@EMBSADGB", SqlDbType.Char, 1, "EMBSADGB");
@@ -561,7 +561,7 @@ namespace SilkRoad.DbCmd_DT01
                                    + "   EMBSIDEN = @EMBSIDEN, "
                                    + "   EMBSPSWD = @EMBSPSWD, "
                                    + "   EMBSEMAL = @EMBSEMAL, "
-                                   + "   EMBSREMK = @EMBSREMK, "
+                                   + "   EMBSDESC = @EMBSDESC, "
                                    + "   PHOTO = @PHOTO, "
                                    + "   YC_TYPE = @YC_TYPE, "
                                    + "   EMBSADGB = @EMBSADGB, "
@@ -595,7 +595,7 @@ namespace SilkRoad.DbCmd_DT01
             ocm.Parameters.Add("@EMBSIDEN", SqlDbType.VarChar, 15, "EMBSIDEN");
             ocm.Parameters.Add("@EMBSPSWD", SqlDbType.VarChar, 10, "EMBSPSWD");
             ocm.Parameters.Add("@EMBSEMAL", SqlDbType.VarChar, 40, "EMBSEMAL");
-            ocm.Parameters.Add("@EMBSREMK", SqlDbType.VarChar, 400, "EMBSREMK");
+            ocm.Parameters.Add("@EMBSDESC", SqlDbType.VarChar, 400, "EMBSDESC");
             ocm.Parameters.Add("@PHOTO", SqlDbType.VarBinary, -1, "PHOTO");
             ocm.Parameters.Add("@YC_TYPE", SqlDbType.Int, 1, "YC_TYPE");
             ocm.Parameters.Add("@EMBSADGB", SqlDbType.Char, 1, "EMBSADGB");

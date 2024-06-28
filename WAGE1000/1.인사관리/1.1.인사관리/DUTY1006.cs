@@ -118,7 +118,7 @@ namespace WAGE1000
 					sl_grcd.EditValue = crow["EMBSGRCD"].ToString().Trim() == "" ? null : crow["EMBSGRCD"].ToString().Trim(); //직급 
 
 					txt_hobo.Text = crow["EMBSHOBO"].ToString().Trim(); //호봉
-					mm_remk.Text = crow["EMBSREMK"].ToString().Trim();
+					mm_remk.Text = crow["EMBSDESC"].ToString().Trim();
 
 					//dat_shdt.DateTime = clib.TextToDate(crow["SH_DATE"].ToString().Trim()); //차기승호일
 																							//귀속일자
@@ -241,7 +241,7 @@ namespace WAGE1000
 					hrow["EMBSEMAL"] = txt_emal.Text.Trim();
 					hrow["EMBSADGB"] = cmb_adgb.SelectedIndex.ToString();
 					//hrow["EMBSADGB"] = chk_adgb.Checked == true ? "1" : "";
-					hrow["EMBSREMK"] = mm_remk.Text.Trim();
+					hrow["EMBSDESC"] = mm_remk.Text.Trim();
 
 					byte[] photo = ImageToByteArray(pic_photo.Image); //이미지를 byte로 반환
 					hrow["PHOTO"] = photo.Length == 0 ? null : photo;
