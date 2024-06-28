@@ -61,7 +61,7 @@ namespace DUTY1000
 
         private void duty8010_Load(object sender, EventArgs e)
         {
-			dat_year.DateTime = DateTime.Now.AddYears(-1);
+			dat_year.DateTime = DateTime.Now;
 			sl_dept.EditValue = null;
 			
 			df.GetMSTUSER_CHKDatas(ds);  //부서관리여부
