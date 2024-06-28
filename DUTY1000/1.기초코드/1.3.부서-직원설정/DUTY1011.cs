@@ -10,7 +10,7 @@ namespace DUTY1000
     public partial class duty1011 : SilkRoad.Form.Base.FormX
     {
         CommonLibrary clib = new CommonLibrary();
-        static string wagedb = "WAGEDB" + SilkRoad.Config.SRConfig.WorkPlaceNo;
+        static string wagedb = "WG06DB" + SilkRoad.Config.SRConfig.WorkPlaceNo;
 
         ClearNEnableControls cec = new ClearNEnableControls();
         public DataSet ds = new DataSet();

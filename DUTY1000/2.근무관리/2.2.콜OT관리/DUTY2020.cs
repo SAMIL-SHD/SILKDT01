@@ -50,7 +50,6 @@ namespace DUTY1000
 					ds.Tables["SEARCH_OVTM"].Clear();
 				grd1.DataSource = null;
 				grd1_ex.DataSource = null;
-				schedulerStorage1.Appointments.DataSource = null;
 			}
 			if (stat == 2)
 			{
@@ -67,11 +66,23 @@ namespace DUTY1000
 					ds.Tables["SEARCH_OVTM2"].Clear();
 				grd2.DataSource = null;
 				grd2_ex.DataSource = null;
-				schedulerStorage1.Appointments.DataSource = null;
-			}
-			if (stat == 3)
-			{
-				btn_save.Text = "저장";
+            }
+            if (stat == 3)
+            {
+                df.Get2020_SEARCH_EMBSDatas(p_dpcd, ds);
+                sl_embs.Properties.DataSource = ds.Tables["2020_SEARCH_EMBS"];
+
+                if (ds.Tables["DUTY_TRSOVTM"] != null)
+                    ds.Tables["DUTY_TRSOVTM"].Clear();
+                if (ds.Tables["SEARCH_OVTM3"] != null)
+                    ds.Tables["SEARCH_OVTM3"].Clear();
+                grd3.DataSource = null;
+                grd3_ex.DataSource = null;
+            }
+            if (stat == 9)
+            {
+                srLabel4.Text = "콜횟수(주)";
+                btn_save.Text = "저장";
 				btn_save.Image = DUTY1000.Properties.Resources.저장;
 				sl_embs.Enabled = true;
 				dat_ovdt.Enabled = true;
@@ -118,7 +129,7 @@ namespace DUTY1000
         private void baseInfoSearch(string gubn)
         {
 			//END_CHK();
-			string dt_nm = gubn == "1" ? "SEARCH_OVTM" : "SEARCH_OVTM2";
+			//string dt_nm = gubn == "1" ? "SEARCH_OVTM" : "SEARCH_OVTM2";
 			if (gubn == "1")
 			{
 				string dept = sl_dept.EditValue == null ? "%" : sl_dept.EditValue.ToString();
@@ -140,52 +151,18 @@ namespace DUTY1000
 				grd2_ex.DataSource = ds.Tables["SEARCH_OVTM2"];
 				grdv2.TopRowIndex = t_index;
 				grdv2.FocusedRowHandle = r_index;
-			}
-			
-			int start_index = 0;
-			switch (clib.WeekDay(clib.TextToDateFirst(clib.DateToText(dat_frmm.DateTime))))
-			{
-				case "일":
-				start_index = 0;
-				break;
-				case "월":
-				start_index = 1;
-				break;
-				case "화":
-				start_index = 2;
-				break;
-				case "수":
-				start_index = 3;
-				break;
-				case "목":
-				start_index = 4;
-				break;
-				case "금":
-				start_index = 5;
-				break;
-				case "토":
-				start_index = 6;
-				break;
-			}
-			int row_count = start_index + clib.TextToInt(clib.DateToText(clib.TextToDateLast(clib.DateToText(dat_frmm.DateTime))).Substring(6, 2).ToString());
-			row_count = row_count / 7 + 1;
-
-			schedulerControl1.Views.MonthView.WeekCount = row_count;
-			schedulerStorage1.Appointments.ResourceSharing = true;
-			schedulerControl1.GroupType = SchedulerGroupType.Resource;
-			schedulerControl1.Start = clib.TextToDateFirst(clib.DateToText(dat_frmm.DateTime));
-			schedulerStorage1.Appointments.DataSource = ds.Tables[dt_nm];
-
-			schedulerStorage1.Appointments.Mappings.Type = "TYPE";         //타입
-			schedulerStorage1.Appointments.Mappings.Start = "FR_DATE";     //시작날짜
-			schedulerStorage1.Appointments.Mappings.End = "TO_DATE";       //끝날짜
-			schedulerStorage1.Appointments.Mappings.AllDay = "ALLDAY";         //전일
-			schedulerStorage1.Appointments.Mappings.Subject = "SAWON_NM";     //주제
-			schedulerStorage1.Appointments.Mappings.Location = "REMARK";     //장소
-			schedulerStorage1.Appointments.Mappings.Description = "REMARK";    //설명
-			schedulerStorage1.Appointments.Mappings.Status = "STATUS";         //상태
-			schedulerStorage1.Appointments.Mappings.Label = "LABEL";           //라벨
-		}
+            }
+            else if(gubn == "3")
+            {
+                int t_index = grdv3.TopRowIndex;
+                int r_index = grdv3.FocusedRowHandle;
+                df.GetSEARCH_OVTMDatas(gubn, clib.DateToText(dat_frmm3.DateTime).Substring(0, 6), clib.DateToText(dat_tomm3.DateTime).Substring(0, 6), "%", ds);
+                grd3.DataSource = ds.Tables["SEARCH_OVTM3"];
+                grd3_ex.DataSource = ds.Tables["SEARCH_OVTM3"];
+                grdv3.TopRowIndex = t_index;
+                grdv3.FocusedRowHandle = r_index;
+            }
+        }
 
         #endregion
 
@@ -199,42 +176,11 @@ namespace DUTY1000
 			dat_frmm2.DateTime = DateTime.Today.AddMonths(-1);
 			dat_tomm2.DateTime = DateTime.Today.AddMonths(-1);
 			sl_dept2.EditValue = null;
-			schedulerControl1.Start = clib.TextToDateFirst(clib.DateToText(DateTime.Today.AddMonths(-1)));
+            dat_frmm3.DateTime = DateTime.Today.AddMonths(-1);
+            dat_tomm3.DateTime = DateTime.Today.AddMonths(-1);
 
-			dat_ovdt.DateTime = DateTime.Today.AddMonths(-1);
+            dat_ovdt.DateTime = DateTime.Today.AddMonths(-1);
 			sl_embs.EditValue = null;
-
-			#region 요일체크       
-			int start_index = 0;
-			switch (clib.WeekDay(clib.TextToDateFirst(clib.DateToText(dat_frmm.DateTime))))
-			{
-				case "일":
-				start_index = 0;
-				break;
-				case "월":
-				start_index = 1;
-				break;
-				case "화":
-				start_index = 2;
-				break;
-				case "수":
-				start_index = 3;
-				break;
-				case "목":
-				start_index = 4;
-				break;
-				case "금":
-				start_index = 5;
-				break;
-				case "토":
-				start_index = 6;
-				break;
-			}
-			int row_count = start_index + clib.TextToInt(clib.DateToText(clib.TextToDateLast(clib.DateToText(dat_frmm.DateTime))).Substring(6, 2).ToString());
-			row_count = row_count / 7 + 1;
-
-			schedulerControl1.Views.MonthView.WeekCount = row_count;
-			#endregion
         }
 		
 		private void duty2020_Shown(object sender, EventArgs e)
@@ -262,30 +208,36 @@ namespace DUTY1000
 				sl_dept2.EditValue = p_dpcd;
 				sl_dept2.Enabled = false;
 			}
-    //        else
-    //        {
-    //            p_dpcd = SilkRoad.Config.SRConfig.US_DPCD == null ? null : SilkRoad.Config.SRConfig.US_DPCD.Trim();
-    //            lb_power.Text = "조회권한 없음";				
-				//sl_dept.EditValue = p_dpcd;
-				//sl_dept.Enabled = false;
-    //            lb_power2.Text = "조회권한 없음";				
-				//sl_dept2.EditValue = p_dpcd;
-				//sl_dept2.Enabled = false;
-    //        }
 			
             SetCancel(1);
 			SetCancel(2);
 			SetCancel(3);
-		}
+            SetCancel(9);
+        }
 
         #endregion
 
         #region 2 Button
-		
-		//조회
-		private void btn_search_Click(object sender, EventArgs e)
+
+
+        private void btn_call_all_Click(object sender, EventArgs e)
+        {
+            duty2023 duty2023 = new duty2023();
+            duty2023.ShowDialog();
+
+            baseInfoSearch("1");
+        }
+        private void btn_ot_all_Click(object sender, EventArgs e)
+        {
+            duty2024 duty2024 = new duty2024();
+            duty2024.ShowDialog();
+
+            baseInfoSearch("2");
+        }
+        //조회
+        private void btn_search_Click(object sender, EventArgs e)
 		{
-			if (isNoError_um(1))
+			if (isNoError_um(11))
 			{
 				//dat_yymm.Enabled = false;
 				//sl_dept.Enabled = false;
@@ -303,7 +255,7 @@ namespace DUTY1000
 		//조회
 		private void btn_search2_Click(object sender, EventArgs e)
 		{
-			if (isNoError_um(11))
+			if (isNoError_um(12))
 			{
 				//dat_yymm.Enabled = false;
 				//sl_dept.Enabled = false;
@@ -318,8 +270,22 @@ namespace DUTY1000
             SetCancel(2);
         }
 
-		//처리
-		private void btn_proc_Click(object sender, EventArgs e)
+        //조회
+        private void btn_search3_Click(object sender, EventArgs e)
+        {
+            if (isNoError_um(13))
+            {
+                baseInfoSearch("3");
+            }
+        }
+        /// <summary>취소버튼</summary>
+        private void btn_clear3_Click(object sender, EventArgs e)
+        {
+            SetCancel(3);
+        }
+
+        //처리
+        private void btn_proc_Click(object sender, EventArgs e)
 		{
 			if (isNoError_um(2))
 			{
@@ -341,8 +307,8 @@ namespace DUTY1000
 
 					txt_cnt1.Focus();
 				}
-				else
-				{
+				else if (sr_gubn.SelectedIndex == 1)
+                {
 					txt_cnt1.Enabled = false;
 					txt_cnt2.Enabled = false;
 					txt_ctime1.Enabled = false;
@@ -351,8 +317,20 @@ namespace DUTY1000
 					txt_ot2.Enabled = true;
 
 					txt_ot1.Focus();
-				}
-				string sldt = clib.DateToText(dat_ovdt.DateTime);
+                }
+                else if (sr_gubn.SelectedIndex == 2)
+                {
+                    srLabel4.Text = "출장횟수";
+                    txt_cnt1.Enabled = true;
+                    txt_cnt2.Enabled = false;
+                    txt_ctime1.Enabled = false;
+                    txt_ctime2.Enabled = false;
+                    txt_ot1.Enabled = false;
+                    txt_ot2.Enabled = false;
+
+                    txt_cnt1.Focus();
+                }
+                string sldt = clib.DateToText(dat_ovdt.DateTime);
 				df.GetDUTY_TRSOVTMDatas(sl_embs.EditValue.ToString(), sldt, (sr_gubn.SelectedIndex + 1).ToString(), ds);
 				if (ds.Tables["DUTY_TRSOVTM"].Rows.Count > 0)
 				{
@@ -431,7 +409,7 @@ namespace DUTY1000
                 {
                     if (outVal > 0)
                         MessageBox.Show("저장되었습니다.", "저장", MessageBoxButtons.OK, MessageBoxIcon.Information);
-					SetCancel(3);
+					SetCancel(9);
 					baseInfoSearch((sr_gubn.SelectedIndex + 1).ToString());
 					sl_embs.Focus();
                     Cursor = Cursors.Default;
@@ -498,7 +476,7 @@ namespace DUTY1000
 					{
 						if (outVal > 0)
 							MessageBox.Show("삭제되었습니다.", "삭제", MessageBoxButtons.OK, MessageBoxIcon.Information);
-						SetCancel(3);
+						SetCancel(9);
 						baseInfoSearch((sr_gubn.SelectedIndex + 1).ToString());
 						sl_embs.Focus();
 						Cursor = Cursors.Default;
@@ -509,7 +487,7 @@ namespace DUTY1000
 		//취소
 		private void btn_canc_Click(object sender, EventArgs e)
 		{
-			SetCancel(3);
+			SetCancel(9);
 		}
         /// <summary>엑셀버튼</summary>
         private void btn_exel_Click(object sender, EventArgs e)
@@ -521,9 +499,13 @@ namespace DUTY1000
         {
             clib.gridToExcel(grdv2_ex, "OT조회_" + clib.DateToText(DateTime.Now), false);
         }
-		
+        private void btn_exel3_Click(object sender, EventArgs e)
+        {
+            clib.gridToExcel(grdv3_ex, "출장조회_" + clib.DateToText(DateTime.Now), false);
+        }
+
         //승인
-		private void btn_ap_save_Click(object sender, EventArgs e)
+        private void btn_ap_save_Click(object sender, EventArgs e)
 		{
 			if (clib.DateToText(dat_frmm.DateTime).Substring(0, 6) != clib.DateToText(dat_tomm.DateTime).Substring(0, 6))
 			{
@@ -537,100 +519,12 @@ namespace DUTY1000
 			}
 			else 
 			{
-				duty2021 duty2021 = new duty2021(clib.DateToText(dat_frmm.DateTime).Substring(0, 6), sl_dept.EditValue.ToString());
+				duty2021 duty2021 = new duty2021(clib.DateToText(dat_frmm.DateTime).Substring(0, 6), sl_dept.EditValue.ToString(), "1");
 				duty2021.ShowDialog();
 				
 				baseInfoSearch("1");
 			}
-			//if (isNoError_um(2))
-   //         {
-   //             int outVal = 0;
-   //             try
-   //             {
-			//		Cursor = Cursors.WaitCursor;
-			//		for (int i = 0; i < ds.Tables["SEARCH_OVTM"].Rows.Count; i++)
-			//		{
-			//			DataRow drow = ds.Tables["SEARCH_OVTM"].Rows[i];
-			//			if (drow["CHK"].ToString() == "1")
-			//			{
-			//				df.GetDUTY_TRSOVTMDatas(drow["SABN"].ToString(), drow["OT_DATE"].ToString(), drow["OT_GUBN"].ToString(), ds);
-			//				if (ds.Tables["DUTY_TRSOVTM"].Rows.Count > 0)
-			//				{
-			//					if (ds.Tables["DUTY_TRSOVTM"].Rows[0]["AP_TAG"].ToString() != "1")
-			//					{
-			//						DataRow hrow = ds.Tables["DUTY_TRSOVTM"].Rows[0];
-			//						hrow["AP_TAG"] = "1";									
-			//						hrow["AP_DT"] = gd.GetNow();
-			//						hrow["AP_USID"] = SilkRoad.Config.SRConfig.USID;
-
-			//						string[] tableNames = new string[] { "DUTY_TRSOVTM" };
-			//						SilkRoad.DbCmd_DT01.DbCmd_DT01 cmd = new SilkRoad.DbCmd_DT01.DbCmd_DT01();
-			//						outVal += cmd.setUpdate(ref ds, tableNames, null);
-			//					}
-			//				}
-			//			}
-			//		}
-   //             }
-   //             catch (Exception ec)
-   //             {
-   //                 MessageBox.Show(ec.Message, "저장오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-   //             }
-   //             finally
-   //             {
-   //                 if (outVal > 0)
-   //                     MessageBox.Show(outVal + "건의 선택된 내역이 승인처리 되었습니다.", "저장", MessageBoxButtons.OK, MessageBoxIcon.Information);
-			//		//SetCancel();
-			//		baseInfoSearch("1");
-   //                 Cursor = Cursors.Default;
-   //             }
-   //         }
 		}
-        //승인취소
-        private void btn_ap_canc_Click(object sender, EventArgs e)
-        {
-			//if (isNoError_um(3))
-			//{
-			//	int outVal = 0;
-			//	try
-			//	{
-			//		Cursor = Cursors.WaitCursor;
-			//		for (int i = 0; i < ds.Tables["SEARCH_OVTM"].Rows.Count; i++)
-			//		{
-			//			DataRow drow = ds.Tables["SEARCH_OVTM"].Rows[i];
-			//			if (drow["C_CHK"].ToString() == "1")
-			//			{
-			//				df.GetDUTY_TRSOVTMDatas(drow["SABN"].ToString(), drow["OT_DATE"].ToString(), drow["OT_GUBN"].ToString(), ds);
-			//				if (ds.Tables["DUTY_TRSOVTM"].Rows.Count > 0)
-			//				{
-			//					if (ds.Tables["DUTY_TRSOVTM"].Rows[0]["AP_TAG"].ToString() == "1")
-			//					{
-			//						DataRow hrow = ds.Tables["DUTY_TRSOVTM"].Rows[0];
-			//						hrow["AP_TAG"] = "2";
-			//						hrow["CANC_DT"] = gd.GetNow();
-			//						hrow["CANC_USID"] = SilkRoad.Config.SRConfig.USID;
-
-			//						string[] tableNames = new string[] { "DUTY_TRSOVTM" };
-			//						SilkRoad.DbCmd_DT01.DbCmd_DT01 cmd = new SilkRoad.DbCmd_DT01.DbCmd_DT01();
-			//						outVal += cmd.setUpdate(ref ds, tableNames, null);
-			//					}
-			//				}
-			//			}
-			//		}
-			//	}
-			//	catch (Exception ec)
-			//	{
-			//		MessageBox.Show(ec.Message, "삭제오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			//	}
-			//	finally
-			//	{
-			//		if (outVal > 0)
-   //                     MessageBox.Show(outVal + "건의 선택된 내역이 승인취소 되었습니다.", "저장", MessageBoxButtons.OK, MessageBoxIcon.Information);
-			//		//SetCancel();
-			//		baseInfoSearch("1");
-			//		Cursor = Cursors.Default;
-			//	}
-			//}
-        }
 		
         //승인
 		private void btn_ap_save2_Click(object sender, EventArgs e)
@@ -652,105 +546,30 @@ namespace DUTY1000
 				
 				baseInfoSearch("2");
 			}
-
-			#region 기존 승인처리
-			//if (isNoError_um(2))
-   //         {
-   //             int outVal = 0;
-   //             try
-   //             {
-			//		Cursor = Cursors.WaitCursor;
-			//		for (int i = 0; i < ds.Tables["SEARCH_OVTM2"].Rows.Count; i++)
-			//		{
-			//			DataRow drow = ds.Tables["SEARCH_OVTM2"].Rows[i];
-			//			if (drow["CHK"].ToString() == "1")
-			//			{
-			//				df.GetDUTY_TRSOVTMDatas(drow["SABN"].ToString(), drow["OT_DATE"].ToString(), drow["OT_GUBN"].ToString(), ds);
-			//				if (ds.Tables["DUTY_TRSOVTM"].Rows.Count > 0)
-			//				{
-			//					if (ds.Tables["DUTY_TRSOVTM"].Rows[0]["AP_TAG"].ToString() != "1")
-			//					{
-			//						DataRow hrow = ds.Tables["DUTY_TRSOVTM"].Rows[0];
-			//						hrow["AP_TAG"] = "1";									
-			//						hrow["AP_DT"] = gd.GetNow();
-			//						hrow["AP_USID"] = SilkRoad.Config.SRConfig.USID;
-
-			//						string[] tableNames = new string[] { "DUTY_TRSOVTM" };
-			//						SilkRoad.DbCmd_DT01.DbCmd_DT01 cmd = new SilkRoad.DbCmd_DT01.DbCmd_DT01();
-			//						outVal += cmd.setUpdate(ref ds, tableNames, null);
-			//					}
-			//				}
-			//			}
-			//		}
-   //             }
-   //             catch (Exception ec)
-   //             {
-   //                 MessageBox.Show(ec.Message, "저장오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-   //             }
-   //             finally
-   //             {
-   //                 if (outVal > 0)
-   //                     MessageBox.Show(outVal + "건의 선택된 내역이 승인처리 되었습니다.", "저장", MessageBoxButtons.OK, MessageBoxIcon.Information);
-			//		//SetCancel();
-			//		baseInfoSearch("2");
-   //                 Cursor = Cursors.Default;
-   //             }
-   //         }
-			#endregion
 		}
-		//승인취소
-		private void btn_ap_canc2_Click(object sender, EventArgs e)
+
+        //승인
+        private void btn_ap_save3_Click(object sender, EventArgs e)
         {
-			//if (isNoError_um(3))
-			//{
-			//	int outVal = 0;
-			//	try
-			//	{
-			//		Cursor = Cursors.WaitCursor;
-			//		for (int i = 0; i < ds.Tables["SEARCH_OVTM2"].Rows.Count; i++)
-			//		{
-			//			DataRow drow = ds.Tables["SEARCH_OVTM2"].Rows[i];
-			//			if (drow["C_CHK"].ToString() == "1")
-			//			{
-			//				df.GetDUTY_TRSOVTMDatas(drow["SABN"].ToString(), drow["OT_DATE"].ToString(), drow["OT_GUBN"].ToString(), ds);
-			//				if (ds.Tables["DUTY_TRSOVTM"].Rows.Count > 0)
-			//				{
-			//					if (ds.Tables["DUTY_TRSOVTM"].Rows[0]["AP_TAG"].ToString() == "1")
-			//					{
-			//						DataRow hrow = ds.Tables["DUTY_TRSOVTM"].Rows[0];
-			//						hrow["AP_TAG"] = "2";
-			//						hrow["CANC_DT"] = gd.GetNow();
-			//						hrow["CANC_USID"] = SilkRoad.Config.SRConfig.USID;
+            if (clib.DateToText(dat_frmm3.DateTime).Substring(0, 6) != clib.DateToText(dat_tomm3.DateTime).Substring(0, 6))
+            {
+                MessageBox.Show("조회년월을 동일하게 설정해주세요!", "저장", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                dat_tomm3.Focus();
+            }
+            else
+            {
+                duty2021 duty2021 = new duty2021(clib.DateToText(dat_frmm3.DateTime).Substring(0, 6), "%", "3");
+                duty2021.ShowDialog();
 
-			//						string[] tableNames = new string[] { "DUTY_TRSOVTM" };
-			//						SilkRoad.DbCmd_DT01.DbCmd_DT01 cmd = new SilkRoad.DbCmd_DT01.DbCmd_DT01();
-			//						outVal += cmd.setUpdate(ref ds, tableNames, null);
-			//					}
-			//				}
-			//			}
-			//		}
-			//	}
-			//	catch (Exception ec)
-			//	{
-			//		MessageBox.Show(ec.Message, "삭제오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			//	}
-			//	finally
-			//	{
-			//		if (outVal > 0)
-   //                     MessageBox.Show(outVal + "건의 선택된 내역이 승인취소 되었습니다.", "저장", MessageBoxButtons.OK, MessageBoxIcon.Information);
-			//		//SetCancel();
-			//		baseInfoSearch("2");
-			//		Cursor = Cursors.Default;
-			//	}
-			//}
+                baseInfoSearch("3");
+            }
         }
-
         #endregion
 
         #region 3 EVENT
-		
-		//메뉴 활성화시
-		private void duty2020_Activated(object sender, EventArgs e)
+
+        //메뉴 활성화시
+        private void duty2020_Activated(object sender, EventArgs e)
 		{
 			//END_CHK();
 		}
@@ -762,7 +581,7 @@ namespace DUTY1000
             if (drow == null)
                 return;
 
-			SetCancel(3);
+			SetCancel(9);
             sl_embs.EditValue = drow["SABN"].ToString().Trim();
 			dat_ovdt.DateTime = clib.TextToDate(drow["OT_DATE"].ToString());
 			sr_gubn.SelectedIndex = clib.TextToInt(drow["OT_GUBN"].ToString()) - 1;
@@ -775,12 +594,25 @@ namespace DUTY1000
             if (drow == null)
                 return;
 
-			SetCancel(3);
+			SetCancel(9);
             sl_embs.EditValue = drow["SABN"].ToString().Trim();
 			dat_ovdt.DateTime = clib.TextToDate(drow["OT_DATE"].ToString());
 			sr_gubn.SelectedIndex = clib.TextToInt(drow["OT_GUBN"].ToString()) - 1;
 			btn_proc.PerformClick();
-		}
+        }
+        //더블클릭시 수정
+        private void grdv3_DoubleClick(object sender, EventArgs e)
+        {
+            DataRow drow = grdv3.GetFocusedDataRow();
+            if (drow == null)
+                return;
+
+            SetCancel(9);
+            sl_embs.EditValue = drow["SABN"].ToString().Trim();
+            dat_ovdt.DateTime = clib.TextToDate(drow["OT_DATE"].ToString());
+            sr_gubn.SelectedIndex = clib.TextToInt(drow["OT_GUBN"].ToString()) - 1;
+            btn_proc.PerformClick();
+        }
 
         private void duty2020_KeyDown(object sender, KeyEventArgs e)
         {
@@ -795,49 +627,6 @@ namespace DUTY1000
 			btn_save.Focus();
 		}
 		
-		private void grdv1_ShowingEditor(object sender, System.ComponentModel.CancelEventArgs e)
-		{			
-   //         DataRow drow = grdv1.GetFocusedDataRow();
-			//if (drow != null)
-			//{
-			//	if (grdv1.FocusedColumn.Name == "col_chk")
-			//	{
-			//		if (ends_yn == "Y")
-			//			e.Cancel = true;
-			//		else if (drow["AP_TAG"].ToString() == "1")
-			//			e.Cancel = true;
-			//	}
-			//	if (grdv1.FocusedColumn.Name == "col_c_chk")
-			//	{
-			//		if (ends_yn == "Y")
-			//			e.Cancel = true;
-			//		else if (drow["AP_TAG"].ToString() != "1")
-			//			e.Cancel = true;
-			//	}
-			//}
-		}
-		private void grdv2_ShowingEditor(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-   //         DataRow drow = grdv2.GetFocusedDataRow();
-			//if (drow != null)
-			//{
-			//	if (grdv2.FocusedColumn.Name == "col_chk2")
-			//	{
-			//		if (ends_yn == "Y")
-			//			e.Cancel = true;
-			//		else if (drow["AP_TAG"].ToString() == "1")
-			//			e.Cancel = true;
-			//	}
-			//	if (grdv2.FocusedColumn.Name == "col_c_chk2")
-			//	{
-			//		if (ends_yn == "Y")
-			//			e.Cancel = true;
-			//		else if (drow["AP_TAG"].ToString() != "1")
-			//			e.Cancel = true;
-			//	}
-			//}
-		}
-
         #endregion
 
         #region 7. Error Check
@@ -850,13 +639,8 @@ namespace DUTY1000
         private bool isNoError_um(int mode)
         {
             bool isError = false;
-            if (mode == 1)  //조회1
+            if (mode == 11)  //조회1
             {
-                //if (admin_lv == 0)
-                //{
-                //    MessageBox.Show("조회권한이 없습니다. 인사기본관리의 관리자구분을 확인하세요!", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //    return false;
-                //}
                 if (clib.DateToText(dat_frmm.DateTime) == "")
                 {
                     MessageBox.Show("조회년월(시작)을 입력하세요.", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -874,13 +658,8 @@ namespace DUTY1000
                     isError = true;
                 }
             }
-            else if (mode == 11)  //조회2
+            else if (mode == 12)  //조회2
             {
-                //if (admin_lv == 0)
-                //{
-                //    MessageBox.Show("조회권한이 없습니다. 인사기본관리의 관리자구분을 확인하세요!", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //    return false;
-                //}
                 if (clib.DateToText(dat_frmm2.DateTime) == "")
                 {
                     MessageBox.Show("조회년월(시작)을 입력하세요.", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -891,6 +670,25 @@ namespace DUTY1000
                 {
                     MessageBox.Show("조회년월(종료)를 입력하세요.", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     dat_tomm2.Focus();
+                    return false;
+                }
+                else
+                {
+                    isError = true;
+                }
+            }
+            else if (mode == 13)  //조회3
+            {
+                if (clib.DateToText(dat_frmm3.DateTime) == "")
+                {
+                    MessageBox.Show("조회년월(시작)을 입력하세요.", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    dat_frmm3.Focus();
+                    return false;
+                }
+                else if (clib.DateToText(dat_tomm3.DateTime) == "")
+                {
+                    MessageBox.Show("조회년월(종료)를 입력하세요.", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    dat_tomm3.Focus();
                     return false;
                 }
                 else
@@ -974,21 +772,7 @@ namespace DUTY1000
 		}
 
 
-		#endregion
-		
-		private void btn_call_all_Click(object sender, EventArgs e)
-		{
-			duty2023 duty2023 = new duty2023();
-			duty2023.ShowDialog();
+        #endregion
 
-			baseInfoSearch("1");
-		}
-		private void btn_ot_all_Click(object sender, EventArgs e)
-		{
-			duty2024 duty2024 = new duty2024();
-			duty2024.ShowDialog();
-
-			baseInfoSearch("2");
-		}
-	}
+    }
 }

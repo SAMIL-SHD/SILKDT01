@@ -25,8 +25,8 @@ namespace DUTY1000
         private string ends_yn = "";
 		
         private int admin_lv = 0;
-        private string msyn = "";
-        private string upyn = "";
+        //private string msyn = "";
+        //private string upyn = "";
         private string p_dpcd = "";
 		
         private string grid_dept = "";
@@ -80,8 +80,10 @@ namespace DUTY1000
 			btn_bf_plan.Enabled = false;
 			chk_g_adt.Checked = false;
 			cmb_day.SelectedIndex = 0;
-			
-			Refresh_Click();
+            gridBand23.Caption = "";
+            gridBand27.Caption = "일자별 근무신청 현황";
+
+            Refresh_Click();
 						
             for (int i = 1; i <= 31; i++)
             {
@@ -164,7 +166,10 @@ namespace DUTY1000
             if (ds.Tables["MSTUSER_CHK"].Rows.Count > 0)
                 admin_lv = clib.TextToInt(ds.Tables["MSTUSER_CHK"].Rows[0]["EMBSADGB"].ToString()); //권한레벨
 
-			if (SilkRoad.Config.ACConfig.G_MSYN == "1" || SilkRoad.Config.SRConfig.USID == "SAMIL" || admin_lv > 2)
+            if (SilkRoad.Config.ACConfig.G_MSYN == "1" || SilkRoad.Config.SRConfig.USID == "SAMIL") //부서설정은 관리자만 (23.08.22 조수진 요청)
+                btn_info.Enabled = true;
+
+            if (SilkRoad.Config.ACConfig.G_MSYN == "1" || SilkRoad.Config.SRConfig.USID == "SAMIL" || admin_lv > 2)
 			{
 				admin_lv = 3;
                 p_dpcd = "%";
@@ -329,13 +334,13 @@ namespace DUTY1000
 							if (ds.Tables["SEARCH_DANG_PLAN"].Select("SAWON_NO = '" + drow["EMBSSABN"].ToString() + "'").Length > 0 && tsdt > 0)
 							{
 								DataRow trow = ds.Tables["SEARCH_DANG_PLAN"].Select("SAWON_NO = '" + drow["EMBSSABN"].ToString() + "'")[0];
-								if (tsdt == 1) //이전퇴사자일땐 라인삭제
+								if (tsdt == 99) //이전퇴사자일땐 라인삭제
 								{
 									trow.Delete();
 								}
 								else
 								{
-									for (int j = tsdt; j <= 31; j++)
+									for (int j = tsdt + 1; j <= 31; j++)
 									{
 										trow["D" + j.ToString().PadLeft(2, '0')] = "";
 									}
@@ -374,8 +379,11 @@ namespace DUTY1000
 			{
                 Cursor = Cursors.WaitCursor;
 
-				#region 처리시작
-				END_CHK();
+                gridBand23.Caption = sl_dept.Text;
+                gridBand27.Caption = clib.DateToText(dat_yymm.DateTime).Substring(4, 2) + "월 일자별 근무신청 현황";
+
+                #region 처리시작
+                END_CHK();
 				grd1.Enabled = true;
 				grd2.Enabled = true;
 
@@ -905,9 +913,40 @@ namespace DUTY1000
                 btn_clear.PerformClick();
             }
         }
-		
-		//조회년월 변경시 부서 다시 불러오기
-		private void dat_yymm_EditValueChanged(object sender, EventArgs e)
+
+        //내역 더블클릭시 인사카드
+        private void grdv1_DoubleClick(object sender, EventArgs e)
+        {
+            DataRow drow = grdv1.GetFocusedDataRow();
+            if (drow != null)
+            {
+                if (admin_lv == 2)  //부서장일때 관리부서인지 체크
+                {
+                    df.GetCHK_DEPTDatas(SilkRoad.Config.SRConfig.USID, sl_dept.EditValue.ToString(), ds);
+                    if (ds.Tables["CHK_DEPT"].Rows.Count == 0)
+                    {
+                        MessageBox.Show("해당부서에 관리권한이 없습니다!", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+                else if (admin_lv == 1 && (p_dpcd != sl_dept.EditValue.ToString()))  //팀장일때 관리부서인지 체크    
+                {
+                    MessageBox.Show("해당부서에 관리권한이 없습니다!", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                df.GetINFOBASEDatas(ref ds);
+                df.GetSabnSubInfo(drow["SAWON_NO"].ToString(), ds);  //사원기본정보
+                rpt_2210 main_rpt = new rpt_2210(ds);
+
+                main_rpt.DataSource = ds.Tables["INSA_PIC"];
+                main_rpt.writeReport(ds, 0);
+                main_rpt.ShowPreview();
+            }
+        }
+
+        //조회년월 변경시 부서 다시 불러오기
+        private void dat_yymm_EditValueChanged(object sender, EventArgs e)
 		{
             SetCancel();
 			//Refresh_Click();

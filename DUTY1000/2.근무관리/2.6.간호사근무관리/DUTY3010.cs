@@ -82,8 +82,10 @@ namespace DUTY1000
 			lb_fr.Text = "( )";
 			lb_to.Text = "( )";
 			srLabel4.Text = "[마감체크]";
-			
-			Refresh_Click();
+            gridBand23.Caption = "";
+            gridBand27.Caption = "일자별 근무신청 현황";
+
+            Refresh_Click();
 						
             for (int i = 1; i <= 31; i++)
             {
@@ -131,7 +133,10 @@ namespace DUTY1000
             if (ds.Tables["MSTUSER_CHK"].Rows.Count > 0)
                 admin_lv = clib.TextToInt(ds.Tables["MSTUSER_CHK"].Rows[0]["EMBSADGB"].ToString()); //권한레벨
 
-			if (admin_lv < 5)
+            if (SilkRoad.Config.ACConfig.G_MSYN == "1" || SilkRoad.Config.SRConfig.USID == "SAMIL") //부서설정은 관리자만 (23.08.22 조수진 요청)
+                btn_info.Enabled = true;
+
+            if (admin_lv < 5)
 			{
 				if (SilkRoad.Config.SRConfig.USID != "SAMIL")
 				{
@@ -342,13 +347,13 @@ namespace DUTY1000
 							if (ds.Tables["SEARCH_PLAN"].Select("SAWON_NO = '" + drow["EMBSSABN"].ToString() + "'").Length > 0 && tsdt > 0)
 							{
 								DataRow trow = ds.Tables["SEARCH_PLAN"].Select("SAWON_NO = '" + drow["EMBSSABN"].ToString() + "'")[0];
-								if (tsdt == 1) //이전퇴사자일땐 라인삭제
+								if (tsdt == 99) //이전퇴사자일땐 라인삭제
 								{
 									trow.Delete();
 								}
 								else
 								{
-									for (int j = tsdt; j <= 31; j++)
+									for (int j = tsdt + 1; j <= 31; j++)
 									{
 										trow["D" + j.ToString().PadLeft(2, '0')] = "";
 									}
@@ -396,9 +401,14 @@ namespace DUTY1000
         private void btn_proc_Click(object sender, EventArgs e)
         {
 			if (isNoError_um(1))
-			{
-				#region 처리시작
-				END_CHK();
+            {
+                Cursor = Cursors.WaitCursor;
+
+                gridBand23.Caption = sl_dept.Text;
+                gridBand27.Caption = clib.DateToText(dat_yymm.DateTime).Substring(4, 2) + "월 일자별 근무신청 현황";
+
+                #region 처리시작
+                END_CHK();
 				grd1.Enabled = true;
 				grd2.Enabled = true;
 
@@ -526,9 +536,15 @@ namespace DUTY1000
 							SetButtonEnable("1011");
 						else
 							SetButtonEnable("0011");
-					}
-				}
-				else
+                    }
+
+                    //신규일때 추가 (24.02.02)
+                    for (int i = 0; i < ds.Tables["SEARCH_PLAN"].Rows.Count; i++)
+                    {
+                        month_calc(ds.Tables["SEARCH_PLAN"].Rows[i]["SAWON_NO"].ToString());
+                    }
+                }
+                else
 				{
 					btn_save.Text = "수  정";
                     btn_save.Image = DUTY1000.Properties.Resources.수정;
@@ -575,7 +591,8 @@ namespace DUTY1000
 				grd1.DataSource = ds.Tables["SEARCH_PLAN"];
 
 				grdv1.Focus();
-			}
+                Cursor = Cursors.Default;
+            }
 		}
 
         //저장버튼
@@ -621,12 +638,12 @@ namespace DUTY1000
 							nrow["PLAN_SQ"] = sq;
 							nrow["REMARK"] = drow["REMARK"].ToString().Trim();
 							nrow["BF_NIGHT"] = clib.TextToInt(drow["BF_NIGHT"].ToString());
-							nrow["BF_OFF"] = clib.TextToInt(drow["BF_OFF"].ToString());
+							nrow["BF_OFF"] = clib.TextToDecimal(drow["BF_OFF"].ToString());
 							nrow["SHIFT_WORK"] = drow["SHIFT_WORK"].ToString();
 							nrow["MAX_NCNT"] = clib.TextToInt(drow["MAX_NCNT"].ToString());
-							nrow["ALLOW_OFF"] = clib.TextToInt(drow["ALLOW_OFF"].ToString());
+							nrow["ALLOW_OFF"] = clib.TextToDecimal(drow["ALLOW_OFF"].ToString());
 							nrow["REMAIN_NIGHT"] = clib.TextToInt(drow["REMAIN_NIGHT"].ToString());
-							nrow["REMAIN_OFF"] = clib.TextToInt(drow["REMAIN_OFF"].ToString());
+							nrow["REMAIN_OFF"] = clib.TextToDecimal(drow["REMAIN_OFF"].ToString());
 							nrow["MM_CNT1"] = clib.TextToDecimal(drow["MM_CNT1"].ToString());
 							nrow["MM_CNT2"] = clib.TextToDecimal(drow["MM_CNT2"].ToString());
 							nrow["MM_CNT3"] = clib.TextToDecimal(drow["MM_CNT3"].ToString());
@@ -764,7 +781,7 @@ namespace DUTY1000
 				nrow["PLAN_SQ"] = max_sq + 1;
 				//nrow["EXP_LV_NM"] = trow["EXP_LV_NM"].ToString();
 				//nrow["BF_OFF"] = trow["BF_OFF"].ToString();
-				nrow["ALLOW_OFF"] = clib.TextToInt(trow["ALLOW_OFF"].ToString());
+				nrow["ALLOW_OFF"] = clib.TextToDecimal(trow["ALLOW_OFF"].ToString());
 				nrow["MAX_NCNT"] = clib.TextToInt(trow["MAX_NCNT"].ToString());
 				ds.Tables["SEARCH_PLAN"].Rows.Add(nrow);
 			}
@@ -916,7 +933,38 @@ namespace DUTY1000
 			btn_proc.PerformClick();			
 		}
 
-		private void grd_lk_gnmu_KeyDown(object sender, KeyEventArgs e)
+        //내역 더블클릭시 인사카드
+        private void grdv1_DoubleClick(object sender, EventArgs e)
+        {
+            DataRow drow = grdv1.GetFocusedDataRow();
+            if (drow != null)
+            {
+                if (admin_lv == 2)  //부서장일때 관리부서인지 체크
+                {
+                    df.GetCHK_DEPTDatas(SilkRoad.Config.SRConfig.USID, sl_dept.EditValue.ToString(), ds);
+                    if (ds.Tables["CHK_DEPT"].Rows.Count == 0)
+                    {
+                        MessageBox.Show("해당부서에 관리권한이 없습니다!", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+                else if (admin_lv == 1 && (p_dpcd != sl_dept.EditValue.ToString()))  //팀장일때 관리부서인지 체크  
+                {
+                    MessageBox.Show("해당부서에 관리권한이 없습니다!", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                df.GetINFOBASEDatas(ref ds);
+                df.GetSabnSubInfo(drow["SAWON_NO"].ToString(), ds);  //사원기본정보
+                rpt_2210 main_rpt = new rpt_2210(ds);
+
+                main_rpt.DataSource = ds.Tables["INSA_PIC"];
+                main_rpt.writeReport(ds, 0);
+                main_rpt.ShowPreview();                
+            }
+        }
+
+        private void grd_lk_gnmu_KeyDown(object sender, KeyEventArgs e)
 		{
 			DataRow drow = grdv1.GetFocusedDataRow();
 			if (drow != null)
@@ -1383,8 +1431,6 @@ namespace DUTY1000
 		/// <param name="mode"></param>
 		private void SetButtonEnable(string arr)
 		{
-			//btn_proc.Enabled = arr.Substring(0, 1) == "1" ? true : false;
-			//btn_clear.Enabled = arr.Substring(1, 1) == "1" ? true : false;
 			btn_save.Enabled = arr.Substring(0, 1) == "1" ? true : false;
 			btn_del.Enabled = arr.Substring(1, 1) == "1" ? true : false;
 			btn_preview.Enabled = arr.Substring(2, 1) == "1" ? true : false;
@@ -1399,8 +1445,8 @@ namespace DUTY1000
 			DataRow srow = ds.Tables["SEARCH_PLAN"].Select("SAWON_NO = '" + sabn + "'")[0];
 			//1.기준년월에 따른 하단 일자컬럼header 일자, 요일 설정
 			int lastday = clib.TextToInt(clib.DateToText(clib.TextToDateLast(clib.DateToText(dat_yymm.DateTime))).Substring(6, 2));
-			//남은 필드 visible = false;
-			int Day = 0, Eve = 0, Night = 0, Off = 0; //, yc = 0;
+            //남은 필드 visible = false;
+            double Day = 0, Eve = 0, Night = 0, Off = 0; //, yc = 0;
 			decimal yc = 0, edu1 = 0, edu2 = 0, hg1 = 0, hg2 = 0;
 			for (int k = 1; k <= lastday; k++)
 			{
@@ -1411,10 +1457,21 @@ namespace DUTY1000
 					{
 						case "2":
 						case "4":
-							Day += 1;
+                            if (trow["G_CODE"].ToString() == "67")
+                            {
+                                Day += 0.5;
+                                Off += 0.5;
+                            }
+                            else if (trow["G_CODE"].ToString() == "68")
+                            {
+                                Eve += 0.5;
+                                Off += 0.5;
+                            }
+                            else
+                                Day += 1;
 							break;
 						case "5":
-							Eve += 1;
+                                Eve += 1;
 							break;
 						case "6":
 							Night += 1;
@@ -1424,21 +1481,27 @@ namespace DUTY1000
 							break;
 						case "8":
 							yc += clib.TextToDecimal(trow["YC_DAY"].ToString());
-							if (trow["G_CODE"].ToString() == "05")
-								edu1 += 1;
-							else if (trow["G_CODE"].ToString() == "07")
-								edu2 += 1;
+							//if (trow["G_CODE"].ToString() == "05")
+							//	edu1 += 1;  //유급
+							if (trow["G_CODE"].ToString() == "07" || trow["G_CODE"].ToString() == "79")
+								edu2 += clib.TextToDecimal(trow["YC_DAY"].ToString());  //무급
 							break;
 						case "12":
-							df.Get3010_SEARCH_HUGADatas(sabn, clib.DateToText(dat_yymm.DateTime).Substring(0, 6) + k.ToString().PadLeft(2, '0'), srow["D" + k.ToString().PadLeft(2, '0')].ToString(), ds);							
-							if (ds.Tables["3010_SEARCH_HUGA"].Rows.Count > 0)
-							{
-								DataRow hrow = ds.Tables["3010_SEARCH_HUGA"].Rows[0];
-								if (hrow["PAY_YN"].ToString() == "0")
-									hg1 += 1;
-								else if (hrow["PAY_YN"].ToString() == "1")
-									hg2 += 1;
-							}
+                            yc += clib.TextToDecimal(trow["YC_DAY"].ToString());
+                            if (trow["G_CODE"].ToString() == "05" || trow["G_CODE"].ToString() == "78")
+                                edu1 += clib.TextToDecimal(trow["YC_DAY"].ToString());  //유급
+                            else
+                            {
+                                df.Get3010_SEARCH_HUGADatas(sabn, clib.DateToText(dat_yymm.DateTime).Substring(0, 6) + k.ToString().PadLeft(2, '0'), srow["D" + k.ToString().PadLeft(2, '0')].ToString(), ds);
+                                if (ds.Tables["3010_SEARCH_HUGA"].Rows.Count > 0)
+                                {
+                                    DataRow hrow = ds.Tables["3010_SEARCH_HUGA"].Rows[0];
+                                    if (hrow["PAY_YN"].ToString() == "1")
+                                        hg1 += 1;
+                                    else if (hrow["PAY_YN"].ToString() == "2")
+                                        hg2 += 1;
+                                }
+                            }
 							break;
 					}
 				}
@@ -1448,11 +1511,11 @@ namespace DUTY1000
 			srow["MM_CNT3"] = Night;
 			srow["MM_CNT4"] = Off;
 			srow["MM_CNT5"] = yc;
-			
-			srow["EDU_CNT1"] = edu1;
+
+            srow["HG_CNT1"] = hg1;
+            srow["HG_CNT2"] = hg2;
+            srow["EDU_CNT1"] = edu1;
 			srow["EDU_CNT2"] = edu2;
-			srow["HG_CNT1"] = hg1;
-			srow["HG_CNT2"] = hg2;
 			//srow["Y_CNT1"] = clib.TextToInt(srow["YEAR_CNT1"].ToString()) + Day;
 			//srow["Y_CNT2"] = clib.TextToInt(srow["YEAR_CNT2"].ToString()) + Eve;
 			//srow["Y_CNT3"] = clib.TextToInt(srow["YEAR_CNT3"].ToString()) + Night;
@@ -1472,12 +1535,12 @@ namespace DUTY1000
 		}
 		private void sum_month_calc()
 		{
-			int T_Day = 0, T_Eve = 0, T_Night = 0, T_yc = 0;
+            double T_Day = 0, T_Eve = 0, T_Night = 0, T_yc = 0;
 			int lastday = clib.TextToInt(clib.DateToText(clib.TextToDateLast(clib.DateToText(dat_yymm.DateTime))).Substring(6, 2));
 			for (int d = 1; d <= lastday; d++)
 			{
 				string dd = d.ToString().PadLeft(2, '0');
-				int Day = 0, Eve = 0, Night = 0;
+				double Day = 0, Eve = 0, Night = 0;
 				for (int i = 0; i < ds.Tables["SEARCH_PLAN"].Rows.Count; i++)
 				{
 					DataRow drow = ds.Tables["SEARCH_PLAN"].Rows[i];
@@ -1490,40 +1553,53 @@ namespace DUTY1000
 							{
 								case "2":
 								case "4":
-									Day += 1;
-									T_Day += 1;
+                                    if (trow["G_CODE"].ToString() == "67")
+                                    {
+                                        Day += 0.5;
+                                        T_Day += 0.5;
+                                    }
+                                    else if (trow["G_CODE"].ToString() == "68")
+                                    {
+                                        Eve += 0.5;
+                                        T_Eve += 0.5;
+                                    }
+                                    else
+                                    {
+                                        Day += 1;
+                                        T_Day += 1;
+                                    }
 									break;
-								case "5":
-									Eve += 1;
-									T_Eve += 1;
+								case "5":                                    
+                                    Eve += 1;
+                                    T_Eve += 1;                                    
 									break;
 								case "6":
 									Night += 1;
 									T_Night += 1;
 									break;
-									//case "8":
-									//	yc += 1;
-									//	T_yc += 1;
-									//	break;
 							}
 						}
 					}
 				}
-				if (ds.Tables["SUM_PLAN"].Select("G_TYPE = 4").Length > 0)
-				{
-					ds.Tables["SUM_PLAN"].Select("G_TYPE = 4")[0]["D" + dd] = Day;
-					ds.Tables["SUM_PLAN"].Select("G_TYPE = 4")[0]["MM_CNT1"] = T_Day;
-				}
-				if (ds.Tables["SUM_PLAN"].Select("G_TYPE = 5").Length > 0)
-				{
-					ds.Tables["SUM_PLAN"].Select("G_TYPE = 5")[0]["D" + dd] = Eve;
-					ds.Tables["SUM_PLAN"].Select("G_TYPE = 5")[0]["MM_CNT2"] = T_Eve;
-				}
-				if (ds.Tables["SUM_PLAN"].Select("G_TYPE = 6").Length > 0)
-				{
-					ds.Tables["SUM_PLAN"].Select("G_TYPE = 6")[0]["D" + dd] = Night;
-					ds.Tables["SUM_PLAN"].Select("G_TYPE = 6")[0]["MM_CNT3"] = T_Night;
-				}
+
+                if (ds.Tables["SUM_PLAN"] != null)
+                {
+                    if (ds.Tables["SUM_PLAN"].Select("G_TYPE = 4").Length > 0)
+                    {
+                        ds.Tables["SUM_PLAN"].Select("G_TYPE = 4")[0]["D" + dd] = Day;
+                        ds.Tables["SUM_PLAN"].Select("G_TYPE = 4")[0]["MM_CNT1"] = T_Day;
+                    }
+                    if (ds.Tables["SUM_PLAN"].Select("G_TYPE = 5").Length > 0)
+                    {
+                        ds.Tables["SUM_PLAN"].Select("G_TYPE = 5")[0]["D" + dd] = Eve;
+                        ds.Tables["SUM_PLAN"].Select("G_TYPE = 5")[0]["MM_CNT2"] = T_Eve;
+                    }
+                    if (ds.Tables["SUM_PLAN"].Select("G_TYPE = 6").Length > 0)
+                    {
+                        ds.Tables["SUM_PLAN"].Select("G_TYPE = 6")[0]["D" + dd] = Night;
+                        ds.Tables["SUM_PLAN"].Select("G_TYPE = 6")[0]["MM_CNT3"] = T_Night;
+                    }
+                }
 				//if (ds.Tables["SUM_PLAN"].Select("G_TYPE = 8").Length > 0)
 				//{
 				//	ds.Tables["SUM_PLAN"].Select("G_TYPE = 8")[0]["D" + dd] = yc;
@@ -1532,7 +1608,7 @@ namespace DUTY1000
 			}
 		}
 
-		#endregion
+        #endregion
 
-	}
+    }
 }

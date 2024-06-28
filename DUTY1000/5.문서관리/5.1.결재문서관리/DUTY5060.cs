@@ -394,7 +394,7 @@ namespace DUTY1000
 				e.Info.DisplayText = (e.RowHandle + 1).ToString();
 		}
 
-		// CALL/OT 타이틀 클릭시 등록화면
+		// CALL/OT/출장 타이틀 클릭시 등록화면
 		private void grd_LinkEdit1_Click(object sender, EventArgs e)
 		{			
 			DataRow frow = grdv_ap2.GetFocusedDataRow();

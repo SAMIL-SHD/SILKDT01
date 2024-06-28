@@ -320,7 +320,6 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\DUTY1000\DUTY1000.csproj">
       <Project>{6a973976-38f7-47c6-8556-89fe440610e1}</Project>
@@ -336,7 +335,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\kshp_qr.png" />
+    <Content Include="Resources\kshp_qr.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

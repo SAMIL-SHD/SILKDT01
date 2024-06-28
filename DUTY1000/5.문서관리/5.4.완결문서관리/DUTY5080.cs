@@ -587,16 +587,18 @@ namespace DUTY1000
 					{
 						doc_gubn = cmb_gubn2.SelectedIndex == 0 ? "%"	//전체
 								: cmb_gubn2.SelectedIndex == 1 ? "1"	//CALL
-								: cmb_gubn2.SelectedIndex == 2 ? "2"	//OT
-								: "-1";
+								: cmb_gubn2.SelectedIndex == 2 ? "2"    //OT
+                                : cmb_gubn2.SelectedIndex == 3 ? "21"   //출장
+                                : "-1";
 						break;
 					}
 				case 2:
 					{
 						doc_gubn = cmb_gubn3.SelectedIndex == 0 ? "%"	//전체
 								: cmb_gubn3.SelectedIndex == 1 ? "3"	//OFF,N
-								: cmb_gubn3.SelectedIndex == 2 ? "4"	//밤근무
-								: "-1";
+								: cmb_gubn3.SelectedIndex == 2 ? "4"    //밤근무
+                                : cmb_gubn3.SelectedIndex == 3 ? "7"    //간호간병
+                                : "-1";
 						break;
 					}
 				case 3:

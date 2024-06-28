@@ -219,7 +219,11 @@ namespace DUTY1000
 						hrow["LIMIT_OFF"] = clib.TextToInt(cmb_limitoff.SelectedIndex.ToString());
 						hrow["RETURN_DT"] = ""; //clib.DateToText(dat_rsn_dt.DateTime);
 						hrow["CHARGE_YN"] = ""; //cmb_charge.EditValue.ToString();  
-						//hrow["EXP_YEAR"] = clib.TextToDecimal(txt_exp.Text.ToString());
+
+						hrow["EXP_YEAR"] = clib.TextToDecimal(txt_exp.Text.ToString());
+						hrow["EXP_Y2"] = clib.TextToDecimal(txt_exp2.Text.ToString());
+						hrow["EXP_Y3"] = clib.TextToDecimal(txt_exp3.Text.ToString());
+						hrow["EXP_Y4"] = clib.TextToDecimal(txt_exp4.Text.ToString());
 
 						hrow["STAT"] = cmb_stat.SelectedIndex + 1;
 						hrow["LDAY"] = clib.DateToText(dat_lday.DateTime);                          
@@ -461,6 +465,9 @@ namespace DUTY1000
 				cmb_allowoff.SelectedIndex = clib.TextToInt(drow["ALLOWOFF"].ToString());
 				cmb_limitoff.SelectedIndex = clib.TextToInt(drow["LIMIT_OFF"].ToString());
 				txt_exp.Text = drow["EXP_YEAR"].ToString();
+				txt_exp2.Text = drow["EXP_Y2"].ToString();
+				txt_exp3.Text = drow["EXP_Y3"].ToString();
+				txt_exp4.Text = drow["EXP_Y4"].ToString();
 
 				cmb_stat.SelectedIndex = clib.TextToInt(drow["STAT"].ToString()) < 1 ? 0 : clib.TextToInt(drow["STAT"].ToString()) - 1;
 				if (drow["LDAY"].ToString() != "")

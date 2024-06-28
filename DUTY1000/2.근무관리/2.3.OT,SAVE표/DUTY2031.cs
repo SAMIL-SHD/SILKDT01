@@ -15,21 +15,27 @@ namespace DUTY1000
         DataProcFunc df = new DataProcFunc();
         SilkRoad.DataProc.GetData gd = new SilkRoad.DataProc.GetData();
         private string ends_yn = "";
+        private string p_dpcd = "";
+        private string dept = "";
 
-        public duty2031()
+        public duty2031(string _p_dpcd)
         {
             InitializeComponent();
+            p_dpcd = _p_dpcd;
         }
 
         #region 0. Initialization
-		
+
         private void SetCancel(int stat)
 		{
-			df.Get2020_SEARCH_EMBSDatas("2500", ds);
-			sl_embs.Properties.DataSource = ds.Tables["2020_SEARCH_EMBS"];
-			sl_embs3.Properties.DataSource = ds.Tables["2020_SEARCH_EMBS"];
+            dept = "";
+            df.Get2030_SEARCH_EMBSDatas(p_dpcd, ds);
+			sl_embs.Properties.DataSource = ds.Tables["2030_SEARCH_EMBS"];
+			sl_embs3.Properties.DataSource = ds.Tables["2030_SEARCH_EMBS"];
+            df.Get2030_DEPTDatas(p_dpcd, ds);
+            sl_dept.Properties.DataSource = ds.Tables["2030_DEPT"];
 
-			if (stat == 3)
+            if (stat == 3)
 			{
 				btn_save.Text = "저장";
 				btn_save.Image = DUTY1000.Properties.Resources.저장;
@@ -81,7 +87,8 @@ namespace DUTY1000
 		private void duty2031_Shown(object sender, EventArgs e)
 		{
 			dat_yymm.DateTime = DateTime.Now;
-			dat_year.DateTime = DateTime.Now;
+            sl_dept.EditValue = null;
+            dat_year.DateTime = DateTime.Now;
 			dat_yymm3.DateTime = DateTime.Now;
 
 			sl_embs.EditValue = null;
@@ -89,10 +96,12 @@ namespace DUTY1000
 
 			SetCancel(3);
 			SetCancel(33);
-			
-			df.GetSEARCH_SAVE_ENDSDatas(clib.DateToText(dat_year.DateTime).Substring(0, 4), ds);
-			grd_end.DataSource = ds.Tables["SEARCH_SAVE_ENDS"];
-		}
+
+            if (p_dpcd != "%")
+                sl_dept.EditValue = p_dpcd;
+            //df.GetSEARCH_SAVE_ENDSDatas("", clib.DateToText(dat_year.DateTime).Substring(0, 4), ds);
+            //grd_end.DataSource = ds.Tables["SEARCH_SAVE_ENDS"];
+        }
 
 		#endregion
 
@@ -104,7 +113,7 @@ namespace DUTY1000
 			if (isNoError_um(1))
 			{
 				string yymm = clib.DateToText(dat_yymm.DateTime).Substring(0, 6);
-				df.GetS_DUTY_TRSSVTMDatas(yymm, ds);
+				df.GetS_DUTY_TRSSVTMDatas(p_dpcd, yymm, ds);
 				grd1.DataSource = ds.Tables["S_DUTY_TRSSVTM"];
 
 				if (ds.Tables["S_DUTY_TRSSVTM"].Rows.Count == 0)
@@ -197,7 +206,7 @@ namespace DUTY1000
 							MessageBox.Show("해당 내용이 저장되었습니다.", "저장", MessageBoxButtons.OK, MessageBoxIcon.Information);
 						SetCancel(3);
 						string yymm = clib.DateToText(dat_yymm.DateTime).Substring(0, 6);
-						df.GetS_DUTY_TRSSVTMDatas(yymm, ds);
+						df.GetS_DUTY_TRSSVTMDatas(p_dpcd, yymm, ds);
 						grd1.DataSource = ds.Tables["S_DUTY_TRSSVTM"];
 						Cursor = Cursors.Default;
 					}
@@ -254,7 +263,7 @@ namespace DUTY1000
 
 							SetCancel(3);
 							string yymm = clib.DateToText(dat_yymm.DateTime).Substring(0, 6);
-							df.GetS_DUTY_TRSSVTMDatas(yymm, ds);
+							df.GetS_DUTY_TRSSVTMDatas(p_dpcd, yymm, ds);
 							grd1.DataSource = ds.Tables["S_DUTY_TRSSVTM"];
 							Cursor = Cursors.Default;
 						}
@@ -277,14 +286,19 @@ namespace DUTY1000
 		{
 			if (isNoError_um(11))
 			{
-				df.GetSEARCH_SAVE_ENDSDatas(clib.DateToText(dat_year.DateTime).Substring(0, 4), ds);
+                sl_dept.Enabled = false;
+                dat_year.Enabled = false;
+
+                df.GetSEARCH_SAVE_ENDSDatas(sl_dept.EditValue.ToString(), sl_dept.Text.ToString(), clib.DateToText(dat_year.DateTime).Substring(0, 4), ds);
 				grd_end.DataSource = ds.Tables["SEARCH_SAVE_ENDS"];
 			}
 		}
 		//마감조회 취소
 		private void btn_clear_Click(object sender, EventArgs e)
-		{
-			grd_end.DataSource = null;
+        {
+            sl_dept.Enabled = true;
+            dat_year.Enabled = true;
+            grd_end.DataSource = null;
 		}
 
 		
@@ -294,7 +308,7 @@ namespace DUTY1000
 			if (isNoError_um(31))
 			{
 				string yymm = clib.DateToText(dat_yymm3.DateTime).Substring(0, 6);
-				df.GetS_DUTY_TRSOVTM_JSDatas(yymm, ds);
+				df.GetS_DUTY_TRSOVTM_JSDatas(p_dpcd, yymm, ds);
 				grd3.DataSource = ds.Tables["S_DUTY_TRSOVTM_JS"];
 
 				if (ds.Tables["S_DUTY_TRSOVTM_JS"].Rows.Count == 0)
@@ -390,7 +404,7 @@ namespace DUTY1000
 							MessageBox.Show("해당 내용이 저장되었습니다.", "저장", MessageBoxButtons.OK, MessageBoxIcon.Information);
 						SetCancel(3);
 						string yymm = clib.DateToText(dat_yymm3.DateTime).Substring(0, 6);
-						df.GetS_DUTY_TRSOVTM_JSDatas(yymm, ds);
+						df.GetS_DUTY_TRSOVTM_JSDatas(p_dpcd, yymm, ds);
 						grd3.DataSource = ds.Tables["S_DUTY_TRSOVTM_JS"];
 						Cursor = Cursors.Default;
 					}
@@ -447,7 +461,7 @@ namespace DUTY1000
 
 							SetCancel(3);
 							string yymm = clib.DateToText(dat_yymm3.DateTime).Substring(0, 6);
-							df.GetS_DUTY_TRSOVTM_JSDatas(yymm, ds);
+							df.GetS_DUTY_TRSOVTM_JSDatas(p_dpcd, yymm, ds);
 							grd3.DataSource = ds.Tables["S_DUTY_TRSOVTM_JS"];
 							Cursor = Cursors.Default;
 						}
@@ -501,11 +515,11 @@ namespace DUTY1000
 			btn_proc3.PerformClick();
 		}
 		
-		private void END_CHK(int page, string sldt)
+		private void END_CHK(int page, string dept, string sldt)
 		{
 			string yymm_nm = sldt.Substring(0, 4) + "." + sldt.Substring(4, 2);
 			string txt_end = "";
-			df.GetS_SAVE_ENDSDatas(sldt.Substring(0, 6), ds);
+			df.GetS_SAVE_ENDSDatas(dept, sldt.Substring(0, 6), ds);
 			if (ds.Tables["S_SAVE_ENDS"].Rows.Count > 0) //마감월이 저장되어 있으면
 			{
 				DataRow irow = ds.Tables["S_SAVE_ENDS"].Rows[0];
@@ -528,20 +542,21 @@ namespace DUTY1000
 		private void repositoryItemCheckEdit1_CheckedChanged(object sender, EventArgs e)
 		{
 			string yymm = grdv_end.GetFocusedDataRow()["END_YYMM"].ToString();
-			if (((DevExpress.XtraEditors.CheckEdit)sender).EditValue.ToString() == "1")
+            string dept = grdv_end.GetFocusedDataRow()["DEPT"].ToString();
+            if (((DevExpress.XtraEditors.CheckEdit)sender).EditValue.ToString() == "1")
 			{
-				Set_End(yymm, 1);
+				Set_End(dept, yymm, 1);
 				MessageBox.Show("마감 되었습니다.", "월마감", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 			else
 			{
-				Set_End(yymm, 2);
+				Set_End(dept, yymm, 2);
 				MessageBox.Show("마감취소 되었습니다.", "월마감", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 		}
-		private void Set_End(string yymm, int stat)
+		private void Set_End(string dept, string yymm, int stat)
 		{
-			df.GetDUTY_MSTSAVE_ENDSDatas(yymm, ds);
+			df.GetDUTY_MSTSAVE_ENDSDatas(dept, yymm, ds);
 			DataRow nrow;
 			if (ds.Tables["DUTY_MSTSAVE_ENDS"].Rows.Count > 0)
 			{
@@ -560,7 +575,8 @@ namespace DUTY1000
 			else
 			{
 				nrow = ds.Tables["DUTY_MSTSAVE_ENDS"].NewRow();
-				nrow["END_YYMM"] = yymm;
+                nrow["DEPT"] = dept;
+                nrow["END_YYMM"] = yymm;
 				nrow["END_DT"] = stat == 1 ? gd.GetNow() : "";
 				nrow["END_ID"] = stat == 1 ? SilkRoad.Config.SRConfig.USID : "";
 				nrow["CANC_DT"] = stat == 1 ? "" : gd.GetNow();
@@ -569,12 +585,12 @@ namespace DUTY1000
 			}
 			nrow["CLOSE_YN"] = stat == 1 ? "1" : "2";
 
-			string[] tableNames = new string[] { "DUTY_MSTSAVE_ENDS" };
-			string[] qry = stat == 1 ? new string[] { "EXEC USP_DUTY2030_END_220809 '" + yymm + "', '" + SilkRoad.Config.SRConfig.USID + "'" } : new string[] { " DELETE FROM DUTY_SUM_SAVE WHERE END_YYMM='" + yymm + "'" };
+			string[] tableNames = new string[] { "DUTY_MSTSAVE_ENDS" };  //USP_DUTY2030_END_220809
+            string[] qry = stat == 1 ? new string[] { "EXEC USP_DUTY2030_END_230530 '" + dept + "','" + yymm + "','" + SilkRoad.Config.SRConfig.USID + "'" } : new string[] { " DELETE FROM DUTY_SUM_SAVE WHERE DEPT='" + dept + "' AND END_YYMM='" + yymm + "'" };
 			SilkRoad.DbCmd_DT01.DbCmd_DT01 cmd = new SilkRoad.DbCmd_DT01.DbCmd_DT01();
 			cmd.setUpdate(ref ds, tableNames, qry);
 			
-			df.GetSEARCH_SAVE_ENDSDatas(clib.DateToText(dat_year.DateTime).Substring(0, 4), ds);
+			df.GetSEARCH_SAVE_ENDSDatas(dept, sl_dept.Text.ToString(), clib.DateToText(dat_year.DateTime).Substring(0, 4), ds);
 			grd_end.DataSource = ds.Tables["SEARCH_SAVE_ENDS"];
 			grdv_end.FocusedRowHandle = yymm == "" ? 0 : grdv_end.LocateByValue("END_YYMM", yymm, null);
 		}
@@ -628,7 +644,9 @@ namespace DUTY1000
 					isError = true;
 				}
 
-				END_CHK(1, clib.DateToText(dat_svdt.DateTime));
+                if (sl_embs.EditValue != null)
+                    dept = ds.Tables["2030_SEARCH_EMBS"].Select("CODE = '" + sl_embs.EditValue.ToString() + "'")[0]["EMBSDPCD"].ToString();
+                END_CHK(1, dept, clib.DateToText(dat_svdt.DateTime));
             }
             else if (mode == 3)  //저장
             {
@@ -639,7 +657,9 @@ namespace DUTY1000
 					return false;
 				}
 
-				END_CHK(1, clib.DateToText(dat_svdt.DateTime));
+                if (sl_embs.EditValue != null)
+                    dept = ds.Tables["2030_SEARCH_EMBS"].Select("CODE = '" + sl_embs.EditValue.ToString() + "'")[0]["EMBSDPCD"].ToString();
+                END_CHK(1, dept, clib.DateToText(dat_svdt.DateTime));
 				if (ends_yn == "1")
 				{
 					MessageBox.Show("SAVE 마감되어 저장할 수 없습니다!", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -659,7 +679,9 @@ namespace DUTY1000
 					return false;
 				}
 
-				END_CHK(1, clib.DateToText(dat_svdt.DateTime));
+                if (sl_embs.EditValue != null)
+                    dept = ds.Tables["2030_SEARCH_EMBS"].Select("CODE = '" + sl_embs.EditValue.ToString() + "'")[0]["EMBSDPCD"].ToString();
+                END_CHK(1, dept, clib.DateToText(dat_svdt.DateTime));
 				if (ends_yn == "1")
 				{
 					MessageBox.Show("SAVE 마감되어 삭제할 수 없습니다!", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -672,13 +694,19 @@ namespace DUTY1000
             }
             if (mode == 11)  //마감조회
             {
-                if (clib.DateToText(dat_year.DateTime) == "")
+                if (sl_dept.EditValue == null)
+                {
+                    MessageBox.Show("부서를 선택하세요.", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    sl_dept.Focus();
+                    return false;
+				}
+                else if (clib.DateToText(dat_year.DateTime) == "")
                 {
                     MessageBox.Show("조회년도를 입력하세요.", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     dat_year.Focus();
                     return false;
-				}
-                else 
+                }
+                else
                 {
                     isError = true;
                 }
@@ -715,7 +743,9 @@ namespace DUTY1000
 					isError = true;
 				}
 
-				END_CHK(3, clib.DateToText(dat_js_date.DateTime));
+                if (sl_embs.EditValue != null)
+                    dept = ds.Tables["2030_SEARCH_EMBS"].Select("CODE = '" + sl_embs3.EditValue.ToString() + "'")[0]["EMBSDPCD"].ToString();
+                END_CHK(3, dept, clib.DateToText(dat_js_date.DateTime));
             }
             else if (mode == 33)  //저장
             {
@@ -726,7 +756,9 @@ namespace DUTY1000
 					return false;
 				}
 
-				END_CHK(3, clib.DateToText(dat_js_date.DateTime));
+                if (sl_embs.EditValue != null)
+                    dept = ds.Tables["2030_SEARCH_EMBS"].Select("CODE = '" + sl_embs3.EditValue.ToString() + "'")[0]["EMBSDPCD"].ToString();
+                END_CHK(3, dept, clib.DateToText(dat_js_date.DateTime));
 				if (ends_yn == "1")
 				{
 					MessageBox.Show("SAVE 마감되어 저장할 수 없습니다!", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -746,7 +778,9 @@ namespace DUTY1000
 					return false;
 				}
 
-				END_CHK(3, clib.DateToText(dat_js_date.DateTime));
+                if (sl_embs.EditValue != null)
+                    dept = ds.Tables["2030_SEARCH_EMBS"].Select("CODE = '" + sl_embs3.EditValue.ToString() + "'")[0]["EMBSDPCD"].ToString();
+                END_CHK(3, dept, clib.DateToText(dat_js_date.DateTime));
 				if (ends_yn == "1")
 				{
 					MessageBox.Show("SAVE 마감되어 삭제할 수 없습니다!", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);

@@ -276,17 +276,17 @@ namespace DUTY1000
 			{
 				if (drow[0].ToString().Trim() != "" && drow[2].ToString().Trim() != "")
 				{
-					if (ds.Tables["S_INFOSD01"].Select("YYMM = '" + drow[0].ToString().Replace("-", "") + "' AND SABN = '" + drow[2].ToString() + "'").Length > 0)
+					if (ds.Tables["S_INFOSD01"].Select("SABN = '" + drow[2].ToString() + "'").Length > 0)
 					{
-						DataRow nrow = ds.Tables["S_INFOSD01"].Select("YYMM = '" + drow[0].ToString().Replace("-", "") + "' AND SABN = '" + drow[2].ToString() + "'")[0];
+						DataRow nrow = ds.Tables["S_INFOSD01"].Select("SABN = '" + drow[2].ToString() + "'")[0];
 						nrow["YY_AMT"] = clib.TextToDecimal(drow[4].ToString());
 						nrow["T_AMT"] = clib.TextToDecimal(drow[5].ToString());
 					}
 					else
 					{
 						DataRow nrow = ds.Tables["S_INFOSD01"].NewRow();
-						nrow["YYMM"] = drow[0].ToString().Replace("-", "");
-						nrow["YYMM_NM"] = drow[0].ToString();
+						nrow["YYMM"] = clib.DateToText(dat_yymm.DateTime);
+						nrow["YYMM_NM"] = clib.DateToText(dat_yymm.DateTime).Substring(0, 4) + clib.DateToText(dat_yymm.DateTime).Substring(4, 2);
 						nrow["DEPT_NM"] = df.GetDept_nmData(drow[2].ToString().Trim());
 						nrow["SABN"] = drow[2].ToString();
 						nrow["SABN_NM"] = df.GetSawon_nmData(drow[2].ToString().Trim()); // drow[3].ToString();

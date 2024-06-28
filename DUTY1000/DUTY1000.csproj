@@ -385,11 +385,125 @@
     <Compile Include="2.근무관리\2.6.간호사근무관리\rpt_3010_sub.Designer.cs">
       <DependentUpon>rpt_3010_sub.cs</DependentUpon>
     </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210.designer.cs">
+      <DependentUpon>rpt_2210.cs</DependentUpon>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_1.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_1.designer.cs">
+      <DependentUpon>rpt_2210_1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_10.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_10.designer.cs">
+      <DependentUpon>rpt_2210_10.cs</DependentUpon>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_11.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_11.designer.cs">
+      <DependentUpon>rpt_2210_11.cs</DependentUpon>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_12.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_12.designer.cs">
+      <DependentUpon>rpt_2210_12.cs</DependentUpon>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_13.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_13.designer.cs">
+      <DependentUpon>rpt_2210_13.cs</DependentUpon>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_14.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_14.designer.cs">
+      <DependentUpon>rpt_2210_14.cs</DependentUpon>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_15.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_15.designer.cs">
+      <DependentUpon>rpt_2210_15.cs</DependentUpon>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_16.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_16.designer.cs">
+      <DependentUpon>rpt_2210_16.cs</DependentUpon>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_17.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_17.designer.cs">
+      <DependentUpon>rpt_2210_17.cs</DependentUpon>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_2.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_2.designer.cs">
+      <DependentUpon>rpt_2210_2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_3.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_3.designer.cs">
+      <DependentUpon>rpt_2210_3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_4.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_4.designer.cs">
+      <DependentUpon>rpt_2210_4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_5.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_5.designer.cs">
+      <DependentUpon>rpt_2210_5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_6.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_6.designer.cs">
+      <DependentUpon>rpt_2210_6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_7.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_7.designer.cs">
+      <DependentUpon>rpt_2210_7.cs</DependentUpon>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_8.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_8.designer.cs">
+      <DependentUpon>rpt_2210_8.cs</DependentUpon>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_9.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="2.근무관리\2.8.인사카드\rpt_2210_9.designer.cs">
+      <DependentUpon>rpt_2210_9.cs</DependentUpon>
+    </Compile>
     <Compile Include="2.근무관리\2.X.연차정산관리\DUTY303X.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="2.근무관리\2.X.연차정산관리\DUTY303X.designer.cs">
       <DependentUpon>DUTY303X.cs</DependentUpon>
+    </Compile>
+    <Compile Include="3.연차관리\3.6.사원별연차관리\DUTY8021.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="3.연차관리\3.6.사원별연차관리\DUTY8021.designer.cs">
+      <DependentUpon>DUTY8021.cs</DependentUpon>
     </Compile>
     <Compile Include="5.문서관리\5.1.결재문서관리\DUTY5064.cs">
       <SubType>Form</SubType>
@@ -408,6 +522,18 @@
     </Compile>
     <Compile Include="5.문서관리\5.1.결재문서관리\DUTY5060.designer.cs">
       <DependentUpon>DUTY5060.cs</DependentUpon>
+    </Compile>
+    <Compile Include="5.문서관리\5.1.결재문서관리\rpt_506a1.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="5.문서관리\5.1.결재문서관리\rpt_506a1.designer.cs">
+      <DependentUpon>rpt_506a1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="5.문서관리\5.1.결재문서관리\rpt_506e.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="5.문서관리\5.1.결재문서관리\rpt_506e.designer.cs">
+      <DependentUpon>rpt_506e.cs</DependentUpon>
     </Compile>
     <Compile Include="5.문서관리\5.1.결재문서관리\rpt_506d.cs">
       <SubType>Component</SubType>
@@ -559,10 +685,16 @@
     <Compile Include="9.환경설정\9.1.시급관리\DUTY9010.designer.cs">
       <DependentUpon>DUTY9010.cs</DependentUpon>
     </Compile>
-    <Compile Include="9.환경설정\9.2.수당산식설정\DUTY9020.cs">
+    <Compile Include="9.환경설정\9.2.밤근무수당관리\DUTY9015.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="9.환경설정\9.2.수당산식설정\DUTY9020.designer.cs">
+    <Compile Include="9.환경설정\9.2.밤근무수당관리\DUTY9015.designer.cs">
+      <DependentUpon>DUTY9015.cs</DependentUpon>
+    </Compile>
+    <Compile Include="9.환경설정\9.9.수당산식설정\DUTY9020.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="9.환경설정\9.9.수당산식설정\DUTY9020.designer.cs">
       <DependentUpon>DUTY9020.cs</DependentUpon>
     </Compile>
     <Compile Include="9.환경설정\9.3.당직시간관리\DUTY9030.cs">
@@ -744,8 +876,65 @@
     <EmbeddedResource Include="2.근무관리\2.6.간호사근무관리\rpt_3010_sub.resx">
       <DependentUpon>rpt_3010_sub.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="2.근무관리\2.8.인사카드\rpt_2210.resx">
+      <DependentUpon>rpt_2210.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="2.근무관리\2.8.인사카드\rpt_2210_1.resx">
+      <DependentUpon>rpt_2210_1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="2.근무관리\2.8.인사카드\rpt_2210_10.resx">
+      <DependentUpon>rpt_2210_10.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="2.근무관리\2.8.인사카드\rpt_2210_11.resx">
+      <DependentUpon>rpt_2210_11.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="2.근무관리\2.8.인사카드\rpt_2210_12.resx">
+      <DependentUpon>rpt_2210_12.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="2.근무관리\2.8.인사카드\rpt_2210_13.resx">
+      <DependentUpon>rpt_2210_13.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="2.근무관리\2.8.인사카드\rpt_2210_14.resx">
+      <DependentUpon>rpt_2210_14.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="2.근무관리\2.8.인사카드\rpt_2210_15.resx">
+      <DependentUpon>rpt_2210_15.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="2.근무관리\2.8.인사카드\rpt_2210_16.resx">
+      <DependentUpon>rpt_2210_16.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="2.근무관리\2.8.인사카드\rpt_2210_17.resx">
+      <DependentUpon>rpt_2210_17.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="2.근무관리\2.8.인사카드\rpt_2210_2.resx">
+      <DependentUpon>rpt_2210_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="2.근무관리\2.8.인사카드\rpt_2210_3.resx">
+      <DependentUpon>rpt_2210_3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="2.근무관리\2.8.인사카드\rpt_2210_4.resx">
+      <DependentUpon>rpt_2210_4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="2.근무관리\2.8.인사카드\rpt_2210_5.resx">
+      <DependentUpon>rpt_2210_5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="2.근무관리\2.8.인사카드\rpt_2210_6.resx">
+      <DependentUpon>rpt_2210_6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="2.근무관리\2.8.인사카드\rpt_2210_7.resx">
+      <DependentUpon>rpt_2210_7.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="2.근무관리\2.8.인사카드\rpt_2210_8.resx">
+      <DependentUpon>rpt_2210_8.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="2.근무관리\2.8.인사카드\rpt_2210_9.resx">
+      <DependentUpon>rpt_2210_9.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="2.근무관리\2.X.연차정산관리\DUTY303X.resx">
       <DependentUpon>DUTY303X.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="3.연차관리\3.6.사원별연차관리\DUTY8021.resx">
+      <DependentUpon>DUTY8021.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="5.문서관리\5.1.결재문서관리\DUTY5064.resx">
       <DependentUpon>DUTY5064.cs</DependentUpon>
@@ -755,6 +944,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="5.문서관리\5.1.결재문서관리\DUTY5060.resx">
       <DependentUpon>DUTY5060.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="5.문서관리\5.1.결재문서관리\rpt_506a1.resx">
+      <DependentUpon>rpt_506a1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="5.문서관리\5.1.결재문서관리\rpt_506e.resx">
+      <DependentUpon>rpt_506e.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="5.문서관리\5.1.결재문서관리\rpt_506d.resx">
       <DependentUpon>rpt_506d.cs</DependentUpon>
@@ -831,7 +1026,10 @@
     <EmbeddedResource Include="9.환경설정\9.1.시급관리\DUTY9010.resx">
       <DependentUpon>DUTY9010.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="9.환경설정\9.2.수당산식설정\DUTY9020.resx">
+    <EmbeddedResource Include="9.환경설정\9.2.밤근무수당관리\DUTY9015.resx">
+      <DependentUpon>DUTY9015.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="9.환경설정\9.9.수당산식설정\DUTY9020.resx">
       <DependentUpon>DUTY9020.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="9.환경설정\9.3.당직시간관리\DUTY9030.resx">
@@ -954,6 +1152,7 @@
   <ItemGroup>
     <None Include="Resources\silkmicon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

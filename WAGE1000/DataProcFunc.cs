@@ -17,7 +17,7 @@ namespace WAGE1000
         static SetData sd = new SetData();
         static CommonLibrary clib = new CommonLibrary();
         static string dbname = DataAccess.DBname;
-        static string wagedb = "WAGEDB" + SilkRoad.Config.SRConfig.WorkPlaceNo;
+        static string wagedb = "WG06DB" + SilkRoad.Config.SRConfig.WorkPlaceNo;
         static string comm_db = "COMMDB" + SilkRoad.Config.SRConfig.WorkPlaceNo;
 				
 		#region 1006 - 인사기본관리

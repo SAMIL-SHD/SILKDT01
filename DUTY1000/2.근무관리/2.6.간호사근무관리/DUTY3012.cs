@@ -175,14 +175,16 @@ namespace DUTY1000
 
 								nrow["OFF_CNT"] = clib.TextToDecimal(dr["OFF_CNT"].ToString());
 								nrow["N_CNT"] = clib.TextToDecimal(dr["N_CNT"].ToString());
-								nrow["OFF_AMT"] = clib.TextToDecimal(dr["OFF_AMT"].ToString());
+                                nrow["OFF_SD"] = clib.TextToDecimal(dr["OFF_SD"].ToString());
+                                nrow["N_SD"] = clib.TextToDecimal(dr["N_SD"].ToString());
+                                nrow["OFF_AMT"] = clib.TextToDecimal(dr["OFF_AMT"].ToString());
 								nrow["N_AMT"] = clib.TextToDecimal(dr["N_AMT"].ToString());
 								nrow["REMARK"] = dr["REMARK"].ToString();
 								nrow["SD_AMT"] = clib.TextToDecimal(dr["SD_AMT"].ToString());
 
-								nrow["BF_OFF"] = clib.TextToInt(dr["BF_OFF"].ToString());
-								nrow["ALLOW_OFF"] = clib.TextToInt(dr["ALLOW_OFF"].ToString());
-								nrow["REMAIN_OFF"] = clib.TextToInt(dr["REMAIN_OFF"].ToString());
+								nrow["BF_OFF"] = clib.TextToDecimal(dr["BF_OFF"].ToString());
+								nrow["ALLOW_OFF"] = clib.TextToDecimal(dr["ALLOW_OFF"].ToString());
+								nrow["REMAIN_OFF"] = clib.TextToDecimal(dr["REMAIN_OFF"].ToString());
 								nrow["MM_CNT4"] = clib.TextToDecimal(dr["MM_CNT4"].ToString());
 								nrow["BF_NIGHT"] = clib.TextToInt(dr["BF_NIGHT"].ToString());
 								nrow["MAX_NCNT"] = clib.TextToInt(dr["MAX_NCNT"].ToString());

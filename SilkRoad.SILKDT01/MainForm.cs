@@ -73,7 +73,7 @@ namespace SilkRoad.SILKDT01
                 bar_user.Caption = Config.SRConfig.USID + "(" + user_name + ")";
 								
                 //string dbname = "COMMDB" + SRConfig.WorkPlaceNo;
-                string wgdb = "WAGEDB" + SRConfig.WorkPlaceNo;
+                string wgdb = "WG06DB" + SRConfig.WorkPlaceNo;
                 qry = " SELECT A.EMBSDPCD, A.EMBSNAME, A.EMBSADGB, RTRIM(ISNULL(X1.DEPRNAM1,'')) DEPT_NM "
                     + "   FROM MSTEMBS A "
                     + "   LEFT OUTER JOIN MSTDEPR X1 "

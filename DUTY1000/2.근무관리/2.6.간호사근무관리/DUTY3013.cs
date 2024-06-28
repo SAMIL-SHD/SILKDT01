@@ -56,7 +56,12 @@ namespace DUTY1000
         {
 			srTitle1.SRTitleTxt = gubn == 1 ? "밤근무 수당내역" : "간호간병비 수당내역";
 
-			df.Get8030_SEARCH_EMBSDatas("%", ds);
+            if (gubn == 1)
+            {
+                gridColumn13.Visible = false;
+                gridColumn19.Visible = false;
+            }
+            df.Get8030_SEARCH_EMBSDatas("%", ds);
 			sl_embs.Properties.DataSource = ds.Tables["8030_SEARCH_EMBS"];
 
 			if (ds.Tables["8030_SEARCH_EMBS"].Select("CODE = '" + SilkRoad.Config.SRConfig.USID + "'").Length > 0)
@@ -106,10 +111,15 @@ namespace DUTY1000
 		//엑셀변환
 		private void btn_excel_Click(object sender, EventArgs e)
 		{
-            clib.gridToExcel(grdv_e, (gubn == 1 ? "밤근무 수당내역_" : "간호간병비 수당내역_") + clib.DateToText(DateTime.Now), true);
-		}
-		//엑셀업로드
-		private void btn_e_up_Click(object sender, EventArgs e)
+            clib.gridToExcel(grdv1, (gubn == 1 ? "밤근무 수당내역_" : "간호간병비 수당내역_") + clib.DateToText(DateTime.Now), true);
+        }
+        //엑셀양식다운
+        private void btn_e_dn_Click(object sender, EventArgs e)
+        {
+            clib.gridToExcel(grdv_e, (gubn == 1 ? "밤근무 수당양식_" : "간호간병비 수당양식_") + clib.DateToText(DateTime.Now), true);
+        }
+        //엑셀업로드
+        private void btn_e_up_Click(object sender, EventArgs e)
 		{
 			#region 엑셀 읽어오기
 			//System.Data.DataTable dt = null;
@@ -193,24 +203,24 @@ namespace DUTY1000
 
 			#endregion
 
-			if (dt.Rows[0][0].ToString().ToString() != "사번")  // dt.Columns[0]
+			if (dt.Rows[0][1].ToString().ToString() != "사번")  // dt.Columns[0]
 			{
 				MessageBox.Show("엑셀형식이 바르지 않습니다.\r\n첫번째 열의 타이틀은 [사번]으로 작성해야합니다.", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
-			else if (dt.Rows[0][2].ToString() != "년차")
+			else if (dt.Rows[0][3].ToString() != "년차")
 			{
 				MessageBox.Show("엑셀형식이 바르지 않습니다.\r\n세번째 열의 타이틀은 [년차]로 작성해야합니다.", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
-			else if (dt.Rows[0][3].ToString() != "갯수")
+			//else if (dt.Rows[0][3].ToString() != "갯수")
+			//{
+			//	MessageBox.Show("엑셀형식이 바르지 않습니다.\r\n네번째 열의 타이틀은 [갯수]으로 작성해야합니다.", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			//	return;
+			//}
+			else if (dt.Rows[0][6].ToString() != "비용")
 			{
-				MessageBox.Show("엑셀형식이 바르지 않습니다.\r\n네번째 열의 타이틀은 [갯수]으로 작성해야합니다.", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return;
-			}
-			else if (dt.Rows[0][4].ToString() != "비용")
-			{
-				MessageBox.Show("엑셀형식이 바르지 않습니다.\r\n다섯번째 열의 타이틀은 [비용]으로 작성해야합니다.", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("엑셀형식이 바르지 않습니다.\r\n여섯번째 열의 타이틀은 [비용]으로 작성해야합니다.", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 
@@ -222,15 +232,46 @@ namespace DUTY1000
 			int t_cnt = dt.Columns.Count;
 			foreach (DataRow drow in dt.Rows)
 			{
-				if (drow[0].ToString().Trim() != "") // && clib.TextToDecimal(drow[2].ToString()) != 0)
+				if (drow[1].ToString().Trim() != "") // && clib.TextToDecimal(drow[2].ToString()) != 0)
 				{
-					if (ds.Tables["3013_SEARCH_SD"].Select("SAWON_NO = '" + drow[0].ToString() + "'").Length > 0)
+                    string sabn = drow[1].ToString().Trim();
+                    if (ds.Tables["3013_SEARCH_SD"].Select("SAWON_NO = '" + sabn + "'").Length > 0)
 					{
-						DataRow nrow = ds.Tables["3013_SEARCH_SD"].Select("SAWON_NO = '" + drow[0].ToString() + "'")[0];
-						nrow["PAST_YEAR"] = clib.TextToDecimal(drow[2].ToString());
-						nrow["MM_CNT3"] = clib.TextToDecimal(drow[3].ToString());
-						nrow["SD_AMT"] = clib.TextToDecimal(drow[4].ToString());
-						outVal++;
+						DataRow nrow = ds.Tables["3013_SEARCH_SD"].Select("SAWON_NO = '" + sabn + "'")[0];
+						nrow["PAST_YEAR"] = clib.TextToDecimal(drow[3].ToString());
+						nrow["MM_CNT3"] = clib.TextToDecimal(drow[4].ToString());
+                        decimal amt = clib.TextToDecimal(drow[6].ToString());
+                        if (gubn == 1)
+                        {
+                            nrow["SD_AMT"] = amt;
+                            nrow["SD_AMT2"] = 0;
+                            nrow["SD_AMT3"] = 0;
+                        }
+                        else if (gubn == 2) //엑셀작성한 금액 그대로 업로드 수정 23.10.11 조수진(간호과장요청)
+                        {
+                            nrow["SD_AMT"] = amt;
+                            nrow["SD_AMT2"] = clib.TextToDecimal(drow[7].ToString());
+                            nrow["SD_AMT3"] = clib.TextToDecimal(drow[8].ToString());
+                        }
+                        //else if (gubn == 2 && amt != 0)
+                        //{
+                        //    //3교대 제외, 간호조무사는 특별수당 1만원 + 나이트전담 (14개)
+                        //    //그외 야간간호료 2만,특별수당 1만원으로 분배
+                        //    df.GetCHK_INCENTDatas(sabn, ds);
+                        //    if (ds.Tables["CHK_INCENT"].Rows.Count > 0)
+                        //    {
+                        //        nrow["SD_AMT"] = amt - 10000;
+                        //        nrow["SD_AMT2"] = 0;
+                        //        nrow["SD_AMT3"] = 10000;
+                        //    }
+                        //    else
+                        //    {
+                        //        nrow["SD_AMT"] = amt - 30000;
+                        //        nrow["SD_AMT2"] = 20000;
+                        //        nrow["SD_AMT3"] = 10000;
+                        //    }
+                        //}
+                        outVal++;
 					}
 				}
 			}
@@ -322,8 +363,10 @@ namespace DUTY1000
 								nrow["N_CNT"] = clib.TextToDecimal(dr["MM_CNT3"].ToString());
 								nrow["IPDT"] = dr["IPDT"].ToString();
 								nrow["SD_AMT"] = clib.TextToDecimal(dr["SD_AMT"].ToString());
+                                nrow["SD_AMT2"] = clib.TextToDecimal(dr["SD_AMT2"].ToString());
+                                nrow["SD_AMT3"] = clib.TextToDecimal(dr["SD_AMT3"].ToString());
 
-								ds.Tables["GW_TRSYAGAN"].Rows.Add(nrow);
+                                ds.Tables["GW_TRSYAGAN"].Rows.Add(nrow);
 							}
 						}
 
@@ -357,11 +400,41 @@ namespace DUTY1000
             }
         }
 
-		#endregion
+        #endregion
 
-		#region 3 EVENT
+        #region 3 EVENT
+        private void grdv1_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+        {
+            //DataRow drow = grdv1.GetFocusedDataRow();
+            //if (drow != null)
+            //{
+            //    decimal amt = clib.TextToDecimal(drow["SD_AMT"].ToString());
+            //    string sabn = drow["SAWON_NO"].ToString().Trim();
+            //    if (grdv1.FocusedColumn == gridColumn3)
+            //    {
+            //        if (gubn == 2 && amt != 0)
+            //        {
+            //            //3교대 제외, 간호조무사는 특별수당 1만원
+            //            //그외 야간간호료 2만,특별수당 1만원으로 분배
+            //            df.GetCHK_INCENTDatas(sabn, ds);
+            //            if (ds.Tables["CHK_INCENT"].Rows.Count > 0)
+            //            {
+            //                drow["SD_AMT"] = amt - 10000;
+            //                drow["SD_AMT2"] = 0;
+            //                drow["SD_AMT3"] = 10000;
+            //            }
+            //            else
+            //            {
+            //                drow["SD_AMT"] = amt - 30000;
+            //                drow["SD_AMT2"] = 20000;
+            //                drow["SD_AMT3"] = 10000;
+            //            }
+            //        }
+            //    }
+            //}
+        }
 
-		private void grd1_EditorKeyDown(object sender, KeyEventArgs e)
+        private void grd1_EditorKeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.KeyCode == Keys.Enter)
 			{
@@ -532,11 +605,11 @@ namespace DUTY1000
             return isError;
         }
 
-		#endregion
+        #endregion
 
-		#region 9. ETC
+        #region 9. ETC
 
-		#endregion
+        #endregion
 
-	}
+    }
 }

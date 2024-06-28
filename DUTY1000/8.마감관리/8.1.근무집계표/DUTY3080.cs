@@ -74,7 +74,8 @@ namespace DUTY1000
 						{
 							if (j != 9)
 							{
-								if (grdv_search.Columns[i].Caption == ds.Tables["SEARCH_INFOSD02"].Rows[0]["A0" + j].ToString())
+								if (grdv_search.Columns[i].Caption == ds.Tables["SEARCH_INFOSD02"].Rows[0]["A0" + j].ToString()
+                                    || grdv_search.Columns[i].Caption == "A012")
 								{
 									grdv_search.Columns[i].Visible = true;
 									break;
@@ -93,8 +94,9 @@ namespace DUTY1000
 						{
 							if (j != 9)
 							{
-								if (grdv_end.Columns[i].Caption == ds.Tables["SEARCH_INFOSD02"].Rows[0]["A0" + j].ToString())
-								{
+								if (grdv_end.Columns[i].Caption == ds.Tables["SEARCH_INFOSD02"].Rows[0]["A0" + j].ToString()
+                                    || grdv_end.Columns[i].Caption == "A012")
+                                {
 									grdv_end.Columns[i].Visible = true;
 									break;
 								}
@@ -184,10 +186,12 @@ namespace DUTY1000
 								if (drow["END_YYMM_NM"].ToString() == "" && clib.TextToDecimal(drow["SD_AMT"].ToString()) != 0)  //금액이 있는것만
 								{
 									#region 환경설정 수당코드 가져오기
-									string sd_code = "";
-									DataRow irow = ds.Tables["SEARCH_INFOSD02"].Rows[0];
+									string sd_code = "", sd_code2 = "", sd_code3 = "";
+                                    int sd_gubn = clib.TextToInt(drow["GUBN"].ToString());
+
+                                    DataRow irow = ds.Tables["SEARCH_INFOSD02"].Rows[0];
 									string time_code = irow["A012"].ToString().Substring(2, 2);
-									switch (clib.TextToInt(drow["GUBN"].ToString()))
+									switch (sd_gubn)
 									{
 										case 1:
 											sd_code = irow["A01"].ToString().Substring(2, 2);
@@ -210,9 +214,11 @@ namespace DUTY1000
 										case 7:
 											sd_code = "15";
 											break;
-										case 8:
+										case 8:  //간호간병인센티브
 											sd_code = "16";
-											break;
+                                            sd_code2 = "15";
+                                            sd_code3 = "12";
+                                            break;
 										case 9:
 											sd_code = irow["A06"].ToString().Substring(2, 2);
 											break;
@@ -249,6 +255,7 @@ namespace DUTY1000
 										nrow["WGPCGT11"] = clib.TextToDecimal(nrow["WGPCGT11"].ToString()) + clib.TextToDecimal(drow["OT_DAY"].ToString());
 										nrow["WGPCGT12"] = clib.TextToDecimal(nrow["WGPCGT12"].ToString()) + clib.TextToDecimal(drow["OT_NIGHT"].ToString());
 										nrow["WGPCGT13"] = clib.TextToDecimal(nrow["WGPCGT13"].ToString()) + clib.TextToDecimal(drow["MIYC_CNT"].ToString());
+										nrow["WGPCGT14"] = clib.TextToDecimal(nrow["WGPCGT14"].ToString()) + clib.TextToDecimal(drow["HOLI_CNT"].ToString());
 									}
 									else
 									{
@@ -267,7 +274,15 @@ namespace DUTY1000
 												nrow["WGPCGT" + i.ToString().PadLeft(2, '0')] = 0;
 										}
 										//string sd_code = ds.Tables["SEARCH_INFOSD02"].Rows[0]["A0" + drow["GUBN"].ToString()].ToString().Substring(2, 2);
-										nrow["WGPCSD" + sd_code] = clib.TextToDecimal(drow["SD_AMT"].ToString());
+
+                                        if (sd_gubn == 8)
+                                        {
+                                            nrow["WGPCSD" + sd_code] = clib.TextToDecimal(drow["SD_AMT1"].ToString());
+                                            nrow["WGPCSD" + sd_code2] = clib.TextToDecimal(drow["SD_AMT2"].ToString());
+                                            nrow["WGPCSD" + sd_code3] = clib.TextToDecimal(drow["SD_AMT3"].ToString());
+                                        }
+                                        else
+										    nrow["WGPCSD" + sd_code] = clib.TextToDecimal(drow["SD_AMT"].ToString());
 
 										nrow["WGPCSD" + time_code] = clib.TextToDecimal(drow["TIME_AMT"].ToString());
 
@@ -284,6 +299,7 @@ namespace DUTY1000
 										nrow["WGPCGT11"] = clib.TextToDecimal(drow["OT_DAY"].ToString());
 										nrow["WGPCGT12"] = clib.TextToDecimal(drow["OT_NIGHT"].ToString());
 										nrow["WGPCGT13"] = clib.TextToDecimal(drow["MIYC_CNT"].ToString());
+										nrow["WGPCGT14"] = clib.TextToDecimal(drow["HOLI_CNT"].ToString());
 
 										ds.Tables["S_DUTY_MSTWGPC"].Rows.Add(nrow);
 									}
@@ -451,11 +467,12 @@ namespace DUTY1000
 												case "18":
 													gubn = "6";
 													break;
-												case "15":
+                                                case "12":
+                                                case "16":
+                                                    gubn = "8";
+                                                    break;
+                                                case "15":
 													gubn = "7";
-													break;
-												case "16":
-													gubn = "8";
 													break;
 												case "19":
 													gubn = "9";

@@ -18,7 +18,8 @@ namespace DUTY1000
 			lab_title.Text = title;
 
 			s_qt2.DataBindings.Add("Text", DataSource, "MM_CNT3", "");
-			xrTableCell2.DataBindings.Add("Text", DataSource, "SD_AMT", "");
-		}
+            
+            xrTableCell2.DataBindings.Add("Text", DataSource, "SD_AMT", "");
+        }
     }
 }

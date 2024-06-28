@@ -23,6 +23,9 @@ namespace DUTY1000
         DataProcFunc df = new DataProcFunc();
         SilkRoad.DataProc.GetData gd = new SilkRoad.DataProc.GetData();
 
+        private int admin_lv = 0;
+        private string p_dpcd = "";
+
         public duty2030()
         {
             InitializeComponent();
@@ -40,7 +43,8 @@ namespace DUTY1000
 				ds.Tables["SEARCH_SAVE"].Clear();
 			grd1.Enabled = false;
 
-			dat_yymm.Enabled = true;
+            sl_dept.Enabled = true;
+            dat_yymm.Enabled = true;
 						
             for (int i = 1; i <= 31; i++)
             {
@@ -48,13 +52,14 @@ namespace DUTY1000
 				grdv1.Columns["D" + i.ToString().PadLeft(2, '0')].AppearanceHeader.Font = new Font(FontFamily.GenericSansSerif, 9F, FontStyle.Regular);
 				grdv1.Columns["D" + i.ToString().PadLeft(2, '0')].ToolTip = "";
             }
-			SetButtonEnable("1000");
+            Refresh_Click();
+            SetButtonEnable("1000");
         }
 		
         //내역 조회
         private void baseInfoSearch()
         {
-			df.GetSEARCH_SAVEDatas(clib.DateToText(dat_yymm.DateTime).Substring(0, 6), ds);
+			df.GetSEARCH_SAVEDatas(sl_dept.EditValue.ToString(), clib.DateToText(dat_yymm.DateTime).Substring(0, 6), ds);
 			grd1.DataSource = ds.Tables["SEARCH_SAVE"];
 		}
 
@@ -64,12 +69,38 @@ namespace DUTY1000
 
         private void duty2030_Load(object sender, EventArgs e)
         {
-			dat_yymm.DateTime = DateTime.Now;	
 		}
 
         private void duty2030_Shown(object sender, EventArgs e)
         {
-			SetCancel();
+            df.GetMSTUSER_CHKDatas(ds);  //부서관리여부
+            if (ds.Tables["MSTUSER_CHK"].Rows.Count > 0)
+                admin_lv = clib.TextToInt(ds.Tables["MSTUSER_CHK"].Rows[0]["EMBSADGB"].ToString()); //권한레벨
+
+            if (SilkRoad.Config.ACConfig.G_MSYN == "1" || SilkRoad.Config.SRConfig.USID == "SAMIL" || admin_lv > 2)
+            {
+                admin_lv = 3;
+                p_dpcd = "%";
+            }
+            else if (admin_lv == 1)
+            {
+                p_dpcd = SilkRoad.Config.SRConfig.US_DPCD == null ? null : SilkRoad.Config.SRConfig.US_DPCD.Trim();
+            }
+            else if (admin_lv == 2)
+            {
+                p_dpcd = "%";
+            }
+            else
+            {
+                p_dpcd = SilkRoad.Config.SRConfig.US_DPCD == null ? null : SilkRoad.Config.SRConfig.US_DPCD.Trim();
+            }
+
+            SetCancel();
+            dat_yymm.DateTime = DateTime.Now;
+            sl_dept.EditValue = null;
+
+            if (p_dpcd != "%")
+                sl_dept.EditValue = p_dpcd;
         }
         #endregion
 
@@ -101,7 +132,8 @@ namespace DUTY1000
                 Cursor = Cursors.WaitCursor;
 				
 				grd1.Enabled = true;
-				dat_yymm.Enabled = false;
+                sl_dept.Enabled = false;
+                dat_yymm.Enabled = false;
 
 				baseInfoSearch(); //내역조회
 
@@ -182,18 +214,25 @@ namespace DUTY1000
 		//환경설정
 		private void btn_info_Click(object sender, EventArgs e)
 		{			
-			duty2031 duty2031 = new duty2031();
+			duty2031 duty2031 = new duty2031(p_dpcd);
 			duty2031.ShowDialog();
 
 			SetCancel();
-		}	
+		}
 
-		#endregion
+        #endregion
 
-		#region 3 EVENT
-		
-		//메뉴 활성화시
-		private void duty2030_Activated(object sender, EventArgs e)
+        #region 3 EVENT
+
+        /// <summary> refresh버튼 </summary>
+        private void Refresh_Click()
+        {
+            df.Get2030_DEPTDatas(p_dpcd, ds);
+            sl_dept.Properties.DataSource = ds.Tables["2030_DEPT"];
+        }
+
+        //메뉴 활성화시
+        private void duty2030_Activated(object sender, EventArgs e)
 		{
 			//END_CHK();
 		}
@@ -226,7 +265,13 @@ namespace DUTY1000
 
             if (mode == 1)  //처리
             {
-                if (dat_yymm.Text.ToString().Trim() == "")
+                if (sl_dept.EditValue == null)
+                {
+                    MessageBox.Show("부서를 선택하세요.", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    sl_dept.Focus();
+                    return false;
+                }
+                else if (dat_yymm.Text.ToString().Trim() == "")
                 {
                     MessageBox.Show("조회년월을 입력하세요.", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     dat_yymm.Focus();

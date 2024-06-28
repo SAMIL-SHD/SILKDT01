@@ -82,6 +82,10 @@
 			this.col_allowoff = new DevExpress.XtraGrid.Columns.GridColumn();
 			this.col_limitoff = new DevExpress.XtraGrid.Columns.GridColumn();
 			this.col_exp = new DevExpress.XtraGrid.Columns.GridColumn();
+			this.col_exp2 = new DevExpress.XtraGrid.Columns.GridColumn();
+			this.col_exp3 = new DevExpress.XtraGrid.Columns.GridColumn();
+			this.col_exp4 = new DevExpress.XtraGrid.Columns.GridColumn();
+			this.col_exp_t = new DevExpress.XtraGrid.Columns.GridColumn();
 			this.col_hpno = new DevExpress.XtraGrid.Columns.GridColumn();
 			this.col_email = new DevExpress.XtraGrid.Columns.GridColumn();
 			this.col_rns_dt = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -100,6 +104,12 @@
 			this.btn_exel = new SilkRoad.UserControls.SRButton();
 			this.srGroupBox5 = new SilkRoad.UserControls.SRGroupBox();
 			this.srPanel9 = new SilkRoad.UserControls.SRPanel();
+			this.txt_exp4 = new SilkRoad.UserControls.SRTextEdit();
+			this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
+			this.txt_exp3 = new SilkRoad.UserControls.SRTextEdit();
+			this.labelControl25 = new DevExpress.XtraEditors.LabelControl();
+			this.txt_exp2 = new SilkRoad.UserControls.SRTextEdit();
+			this.labelControl23 = new DevExpress.XtraEditors.LabelControl();
 			this.txt_exp = new SilkRoad.UserControls.SRTextEdit();
 			this.cmb_limitoff = new SilkRoad.UserControls.SRCombo();
 			this.labelControl22 = new DevExpress.XtraEditors.LabelControl();
@@ -177,6 +187,9 @@
 			this.srGroupBox5.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.srPanel9)).BeginInit();
 			this.srPanel9.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.txt_exp4.Properties)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.txt_exp3.Properties)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.txt_exp2.Properties)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.txt_exp.Properties)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmb_limitoff.Properties)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmb_stat.Properties)).BeginInit();
@@ -730,6 +743,10 @@
             this.col_allowoff,
             this.col_limitoff,
             this.col_exp,
+            this.col_exp2,
+            this.col_exp3,
+            this.col_exp4,
+            this.col_exp_t,
             this.col_hpno,
             this.col_email,
             this.col_rns_dt,
@@ -880,7 +897,7 @@
 			this.col_exp.AppearanceHeader.Options.UseTextOptions = true;
 			this.col_exp.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
 			this.col_exp.AppearanceHeader.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-			this.col_exp.Caption = "경력인정";
+			this.col_exp.Caption = "실경력";
 			this.col_exp.DisplayFormat.FormatString = "{0:#,##0.#}";
 			this.col_exp.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
 			this.col_exp.FieldName = "EXP_YEAR";
@@ -889,7 +906,71 @@
 			this.col_exp.OptionsColumn.AllowMerge = DevExpress.Utils.DefaultBoolean.False;
 			this.col_exp.OptionsColumn.ReadOnly = true;
 			this.col_exp.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
+			this.col_exp.Summary.AddRange(new DevExpress.XtraGrid.GridSummaryItem[] {
+            new DevExpress.XtraGrid.GridColumnSummaryItem(DevExpress.Data.SummaryItemType.Sum, "EXP_YEAR", "{0:#,##0.#}")});
+			this.col_exp.Visible = true;
+			this.col_exp.VisibleIndex = 7;
 			this.col_exp.Width = 60;
+			// 
+			// col_exp2
+			// 
+			this.col_exp2.AppearanceCell.Options.UseTextOptions = true;
+			this.col_exp2.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+			this.col_exp2.Caption = "학사경력";
+			this.col_exp2.DisplayFormat.FormatString = "{0:#,##0.#}";
+			this.col_exp2.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+			this.col_exp2.FieldName = "EXP_Y2";
+			this.col_exp2.Name = "col_exp2";
+			this.col_exp2.Summary.AddRange(new DevExpress.XtraGrid.GridSummaryItem[] {
+            new DevExpress.XtraGrid.GridColumnSummaryItem(DevExpress.Data.SummaryItemType.Sum, "EXP_Y2", "{0:#,##0.#}")});
+			this.col_exp2.Visible = true;
+			this.col_exp2.VisibleIndex = 8;
+			this.col_exp2.Width = 61;
+			// 
+			// col_exp3
+			// 
+			this.col_exp3.AppearanceCell.Options.UseTextOptions = true;
+			this.col_exp3.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+			this.col_exp3.Caption = "군경력";
+			this.col_exp3.DisplayFormat.FormatString = "{0:#,##0.#}";
+			this.col_exp3.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+			this.col_exp3.FieldName = "EXP_Y3";
+			this.col_exp3.Name = "col_exp3";
+			this.col_exp3.Summary.AddRange(new DevExpress.XtraGrid.GridSummaryItem[] {
+            new DevExpress.XtraGrid.GridColumnSummaryItem(DevExpress.Data.SummaryItemType.Sum, "EXP_Y3", "{0:#,##0.#}")});
+			this.col_exp3.Visible = true;
+			this.col_exp3.VisibleIndex = 9;
+			this.col_exp3.Width = 57;
+			// 
+			// col_exp4
+			// 
+			this.col_exp4.AppearanceCell.Options.UseTextOptions = true;
+			this.col_exp4.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+			this.col_exp4.Caption = "기타경력";
+			this.col_exp4.DisplayFormat.FormatString = "{0:#,##0.#}";
+			this.col_exp4.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+			this.col_exp4.FieldName = "EXP_Y4";
+			this.col_exp4.Name = "col_exp4";
+			this.col_exp4.Summary.AddRange(new DevExpress.XtraGrid.GridSummaryItem[] {
+            new DevExpress.XtraGrid.GridColumnSummaryItem(DevExpress.Data.SummaryItemType.Sum, "EXP_Y4", "{0:#,##0.#}")});
+			this.col_exp4.Visible = true;
+			this.col_exp4.VisibleIndex = 10;
+			this.col_exp4.Width = 57;
+			// 
+			// col_exp_t
+			// 
+			this.col_exp_t.AppearanceCell.Options.UseTextOptions = true;
+			this.col_exp_t.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+			this.col_exp_t.Caption = "총경력";
+			this.col_exp_t.DisplayFormat.FormatString = "{0:#,##0.#}";
+			this.col_exp_t.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+			this.col_exp_t.FieldName = "EXP_T";
+			this.col_exp_t.Name = "col_exp_t";
+			this.col_exp_t.Summary.AddRange(new DevExpress.XtraGrid.GridSummaryItem[] {
+            new DevExpress.XtraGrid.GridColumnSummaryItem(DevExpress.Data.SummaryItemType.Sum, "EXP_T", "{0:#,##0.#}")});
+			this.col_exp_t.Visible = true;
+			this.col_exp_t.VisibleIndex = 11;
+			this.col_exp_t.Width = 60;
 			// 
 			// col_hpno
 			// 
@@ -904,7 +985,7 @@
 			this.col_hpno.OptionsColumn.ReadOnly = true;
 			this.col_hpno.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
 			this.col_hpno.Visible = true;
-			this.col_hpno.VisibleIndex = 7;
+			this.col_hpno.VisibleIndex = 12;
 			this.col_hpno.Width = 98;
 			// 
 			// col_email
@@ -920,7 +1001,7 @@
 			this.col_email.OptionsColumn.ReadOnly = true;
 			this.col_email.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
 			this.col_email.Visible = true;
-			this.col_email.VisibleIndex = 8;
+			this.col_email.VisibleIndex = 13;
 			this.col_email.Width = 144;
 			// 
 			// col_rns_dt
@@ -949,7 +1030,7 @@
 			this.gridColumn12.OptionsColumn.ReadOnly = true;
 			this.gridColumn12.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.False;
 			this.gridColumn12.Visible = true;
-			this.gridColumn12.VisibleIndex = 9;
+			this.gridColumn12.VisibleIndex = 14;
 			this.gridColumn12.Width = 62;
 			// 
 			// insa_jakuk
@@ -1137,6 +1218,12 @@
 			// srPanel9
 			// 
 			this.srPanel9.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+			this.srPanel9.Controls.Add(this.txt_exp4);
+			this.srPanel9.Controls.Add(this.labelControl3);
+			this.srPanel9.Controls.Add(this.txt_exp3);
+			this.srPanel9.Controls.Add(this.labelControl25);
+			this.srPanel9.Controls.Add(this.txt_exp2);
+			this.srPanel9.Controls.Add(this.labelControl23);
 			this.srPanel9.Controls.Add(this.txt_exp);
 			this.srPanel9.Controls.Add(this.cmb_limitoff);
 			this.srPanel9.Controls.Add(this.labelControl22);
@@ -1167,11 +1254,125 @@
 			this.srPanel9.Size = new System.Drawing.Size(266, 567);
 			this.srPanel9.TabIndex = 1;
 			// 
+			// txt_exp4
+			// 
+			this.txt_exp4.EditValue = "";
+			this.txt_exp4.EnterMoveNextControl = true;
+			this.txt_exp4.Location = new System.Drawing.Point(116, 396);
+			this.txt_exp4.Name = "txt_exp4";
+			this.txt_exp4.Properties.Appearance.Font = new System.Drawing.Font("맑은 고딕", 9F);
+			this.txt_exp4.Properties.Appearance.Options.UseFont = true;
+			this.txt_exp4.Properties.Appearance.Options.UseTextOptions = true;
+			this.txt_exp4.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+			this.txt_exp4.Properties.AppearanceFocused.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+			this.txt_exp4.Properties.AppearanceFocused.Options.UseBackColor = true;
+			this.txt_exp4.Properties.AutoHeight = false;
+			this.txt_exp4.Properties.LookAndFeel.SkinName = "Lilian";
+			this.txt_exp4.Properties.Mask.EditMask = "n1";
+			this.txt_exp4.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric;
+			this.txt_exp4.Properties.Mask.UseMaskAsDisplayFormat = true;
+			this.txt_exp4.Size = new System.Drawing.Size(140, 22);
+			this.txt_exp4.TabIndex = 524;
+			// 
+			// labelControl3
+			// 
+			this.labelControl3.Appearance.BackColor = System.Drawing.Color.White;
+			this.labelControl3.Appearance.BackColor2 = System.Drawing.Color.Pink;
+			this.labelControl3.Appearance.Font = new System.Drawing.Font("맑은 고딕", 9F);
+			this.labelControl3.Appearance.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+			this.labelControl3.Appearance.Options.UseBackColor = true;
+			this.labelControl3.Appearance.Options.UseFont = true;
+			this.labelControl3.Appearance.Options.UseTextOptions = true;
+			this.labelControl3.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+			this.labelControl3.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+			this.labelControl3.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.HotFlat;
+			this.labelControl3.Location = new System.Drawing.Point(6, 396);
+			this.labelControl3.Name = "labelControl3";
+			this.labelControl3.Size = new System.Drawing.Size(110, 22);
+			this.labelControl3.TabIndex = 523;
+			this.labelControl3.Text = "기타경력";
+			// 
+			// txt_exp3
+			// 
+			this.txt_exp3.EditValue = "";
+			this.txt_exp3.EnterMoveNextControl = true;
+			this.txt_exp3.Location = new System.Drawing.Point(116, 372);
+			this.txt_exp3.Name = "txt_exp3";
+			this.txt_exp3.Properties.Appearance.Font = new System.Drawing.Font("맑은 고딕", 9F);
+			this.txt_exp3.Properties.Appearance.Options.UseFont = true;
+			this.txt_exp3.Properties.Appearance.Options.UseTextOptions = true;
+			this.txt_exp3.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+			this.txt_exp3.Properties.AppearanceFocused.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+			this.txt_exp3.Properties.AppearanceFocused.Options.UseBackColor = true;
+			this.txt_exp3.Properties.AutoHeight = false;
+			this.txt_exp3.Properties.LookAndFeel.SkinName = "Lilian";
+			this.txt_exp3.Properties.Mask.EditMask = "n1";
+			this.txt_exp3.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric;
+			this.txt_exp3.Properties.Mask.UseMaskAsDisplayFormat = true;
+			this.txt_exp3.Size = new System.Drawing.Size(140, 22);
+			this.txt_exp3.TabIndex = 522;
+			// 
+			// labelControl25
+			// 
+			this.labelControl25.Appearance.BackColor = System.Drawing.Color.White;
+			this.labelControl25.Appearance.BackColor2 = System.Drawing.Color.Pink;
+			this.labelControl25.Appearance.Font = new System.Drawing.Font("맑은 고딕", 9F);
+			this.labelControl25.Appearance.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+			this.labelControl25.Appearance.Options.UseBackColor = true;
+			this.labelControl25.Appearance.Options.UseFont = true;
+			this.labelControl25.Appearance.Options.UseTextOptions = true;
+			this.labelControl25.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+			this.labelControl25.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+			this.labelControl25.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.HotFlat;
+			this.labelControl25.Location = new System.Drawing.Point(6, 372);
+			this.labelControl25.Name = "labelControl25";
+			this.labelControl25.Size = new System.Drawing.Size(110, 22);
+			this.labelControl25.TabIndex = 521;
+			this.labelControl25.Text = "군경력";
+			// 
+			// txt_exp2
+			// 
+			this.txt_exp2.EditValue = "";
+			this.txt_exp2.EnterMoveNextControl = true;
+			this.txt_exp2.Location = new System.Drawing.Point(116, 348);
+			this.txt_exp2.Name = "txt_exp2";
+			this.txt_exp2.Properties.Appearance.Font = new System.Drawing.Font("맑은 고딕", 9F);
+			this.txt_exp2.Properties.Appearance.Options.UseFont = true;
+			this.txt_exp2.Properties.Appearance.Options.UseTextOptions = true;
+			this.txt_exp2.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+			this.txt_exp2.Properties.AppearanceFocused.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+			this.txt_exp2.Properties.AppearanceFocused.Options.UseBackColor = true;
+			this.txt_exp2.Properties.AutoHeight = false;
+			this.txt_exp2.Properties.LookAndFeel.SkinName = "Lilian";
+			this.txt_exp2.Properties.Mask.EditMask = "n1";
+			this.txt_exp2.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric;
+			this.txt_exp2.Properties.Mask.UseMaskAsDisplayFormat = true;
+			this.txt_exp2.Size = new System.Drawing.Size(140, 22);
+			this.txt_exp2.TabIndex = 520;
+			// 
+			// labelControl23
+			// 
+			this.labelControl23.Appearance.BackColor = System.Drawing.Color.White;
+			this.labelControl23.Appearance.BackColor2 = System.Drawing.Color.Pink;
+			this.labelControl23.Appearance.Font = new System.Drawing.Font("맑은 고딕", 9F);
+			this.labelControl23.Appearance.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+			this.labelControl23.Appearance.Options.UseBackColor = true;
+			this.labelControl23.Appearance.Options.UseFont = true;
+			this.labelControl23.Appearance.Options.UseTextOptions = true;
+			this.labelControl23.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+			this.labelControl23.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+			this.labelControl23.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.HotFlat;
+			this.labelControl23.Location = new System.Drawing.Point(6, 348);
+			this.labelControl23.Name = "labelControl23";
+			this.labelControl23.Size = new System.Drawing.Size(110, 22);
+			this.labelControl23.TabIndex = 519;
+			this.labelControl23.Text = "학사경력";
+			// 
 			// txt_exp
 			// 
 			this.txt_exp.EditValue = "";
 			this.txt_exp.EnterMoveNextControl = true;
-			this.txt_exp.Location = new System.Drawing.Point(116, 281);
+			this.txt_exp.Location = new System.Drawing.Point(116, 323);
 			this.txt_exp.Name = "txt_exp";
 			this.txt_exp.Properties.Appearance.Font = new System.Drawing.Font("맑은 고딕", 9F);
 			this.txt_exp.Properties.Appearance.Options.UseFont = true;
@@ -1186,13 +1387,12 @@
 			this.txt_exp.Properties.Mask.UseMaskAsDisplayFormat = true;
 			this.txt_exp.Size = new System.Drawing.Size(140, 22);
 			this.txt_exp.TabIndex = 512;
-			this.txt_exp.Visible = false;
 			// 
 			// cmb_limitoff
 			// 
 			this.cmb_limitoff.EditValue = "     ";
 			this.cmb_limitoff.EnterMoveNextControl = true;
-			this.cmb_limitoff.Location = new System.Drawing.Point(116, 255);
+			this.cmb_limitoff.Location = new System.Drawing.Point(116, 235);
 			this.cmb_limitoff.Name = "cmb_limitoff";
 			this.cmb_limitoff.Properties.Appearance.Font = new System.Drawing.Font("맑은 고딕", 9F);
 			this.cmb_limitoff.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
@@ -1234,7 +1434,7 @@
 			this.labelControl22.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
 			this.labelControl22.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
 			this.labelControl22.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.HotFlat;
-			this.labelControl22.Location = new System.Drawing.Point(6, 255);
+			this.labelControl22.Location = new System.Drawing.Point(6, 235);
 			this.labelControl22.Name = "labelControl22";
 			this.labelControl22.Size = new System.Drawing.Size(110, 22);
 			this.labelControl22.TabIndex = 456;
@@ -1252,7 +1452,7 @@
 			this.labelControl20.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
 			this.labelControl20.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
 			this.labelControl20.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.HotFlat;
-			this.labelControl20.Location = new System.Drawing.Point(6, 338);
+			this.labelControl20.Location = new System.Drawing.Point(6, 290);
 			this.labelControl20.Name = "labelControl20";
 			this.labelControl20.Size = new System.Drawing.Size(110, 22);
 			this.labelControl20.TabIndex = 455;
@@ -1270,7 +1470,7 @@
 			this.labelControl21.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
 			this.labelControl21.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
 			this.labelControl21.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.HotFlat;
-			this.labelControl21.Location = new System.Drawing.Point(6, 314);
+			this.labelControl21.Location = new System.Drawing.Point(6, 266);
 			this.labelControl21.Name = "labelControl21";
 			this.labelControl21.Size = new System.Drawing.Size(110, 22);
 			this.labelControl21.TabIndex = 454;
@@ -1280,7 +1480,7 @@
 			// 
 			this.cmb_stat.EditValue = "정    상";
 			this.cmb_stat.EnterMoveNextControl = true;
-			this.cmb_stat.Location = new System.Drawing.Point(116, 314);
+			this.cmb_stat.Location = new System.Drawing.Point(116, 266);
 			this.cmb_stat.Name = "cmb_stat";
 			this.cmb_stat.Properties.Appearance.Font = new System.Drawing.Font("맑은 고딕", 9F);
 			this.cmb_stat.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
@@ -1302,7 +1502,7 @@
 			this.dat_lday.EditValue = "";
 			this.dat_lday.Enabled = false;
 			this.dat_lday.EnterMoveNextControl = true;
-			this.dat_lday.Location = new System.Drawing.Point(116, 338);
+			this.dat_lday.Location = new System.Drawing.Point(116, 290);
 			this.dat_lday.Name = "dat_lday";
 			this.dat_lday.Properties.AllowMouseWheel = false;
 			this.dat_lday.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1325,7 +1525,7 @@
 			// 
 			this.cmb_shift_work.EditValue = "     ";
 			this.cmb_shift_work.EnterMoveNextControl = true;
-			this.cmb_shift_work.Location = new System.Drawing.Point(116, 178);
+			this.cmb_shift_work.Location = new System.Drawing.Point(116, 158);
 			this.cmb_shift_work.Name = "cmb_shift_work";
 			this.cmb_shift_work.Properties.Appearance.Font = new System.Drawing.Font("맑은 고딕", 9F);
 			this.cmb_shift_work.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
@@ -1359,7 +1559,7 @@
 			this.labelControl16.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
 			this.labelControl16.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
 			this.labelControl16.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.HotFlat;
-			this.labelControl16.Location = new System.Drawing.Point(6, 178);
+			this.labelControl16.Location = new System.Drawing.Point(6, 158);
 			this.labelControl16.Name = "labelControl16";
 			this.labelControl16.Size = new System.Drawing.Size(110, 22);
 			this.labelControl16.TabIndex = 448;
@@ -1446,7 +1646,7 @@
 			// labelControl19
 			// 
 			this.labelControl19.Appearance.BackColor = System.Drawing.Color.White;
-			this.labelControl19.Appearance.BackColor2 = System.Drawing.Color.Lavender;
+			this.labelControl19.Appearance.BackColor2 = System.Drawing.Color.Pink;
 			this.labelControl19.Appearance.Font = new System.Drawing.Font("맑은 고딕", 9F);
 			this.labelControl19.Appearance.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
 			this.labelControl19.Appearance.Options.UseBackColor = true;
@@ -1455,12 +1655,11 @@
 			this.labelControl19.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
 			this.labelControl19.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
 			this.labelControl19.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.HotFlat;
-			this.labelControl19.Location = new System.Drawing.Point(6, 281);
+			this.labelControl19.Location = new System.Drawing.Point(6, 323);
 			this.labelControl19.Name = "labelControl19";
 			this.labelControl19.Size = new System.Drawing.Size(110, 22);
 			this.labelControl19.TabIndex = 428;
-			this.labelControl19.Text = "경력인정";
-			this.labelControl19.Visible = false;
+			this.labelControl19.Text = "실경력";
 			// 
 			// labelControl15
 			// 
@@ -1502,7 +1701,7 @@
 			// 
 			this.cmb_allowoff.EditValue = "     ";
 			this.cmb_allowoff.EnterMoveNextControl = true;
-			this.cmb_allowoff.Location = new System.Drawing.Point(116, 229);
+			this.cmb_allowoff.Location = new System.Drawing.Point(116, 209);
 			this.cmb_allowoff.Name = "cmb_allowoff";
 			this.cmb_allowoff.Properties.Appearance.Font = new System.Drawing.Font("맑은 고딕", 9F);
 			this.cmb_allowoff.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
@@ -1533,7 +1732,12 @@
             "13일",
             "14일",
             "15일",
-            "16일"});
+            "16일",
+            "16일",
+            "17일",
+            "18일",
+            "19일",
+            "20일"});
 			this.cmb_allowoff.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
 			this.cmb_allowoff.Size = new System.Drawing.Size(140, 22);
 			this.cmb_allowoff.TabIndex = 417;
@@ -1550,7 +1754,7 @@
 			this.labelControl13.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
 			this.labelControl13.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
 			this.labelControl13.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.HotFlat;
-			this.labelControl13.Location = new System.Drawing.Point(6, 229);
+			this.labelControl13.Location = new System.Drawing.Point(6, 209);
 			this.labelControl13.Name = "labelControl13";
 			this.labelControl13.Size = new System.Drawing.Size(110, 22);
 			this.labelControl13.TabIndex = 416;
@@ -1560,7 +1764,7 @@
 			// 
 			this.cmb_max_n.EditValue = "     ";
 			this.cmb_max_n.EnterMoveNextControl = true;
-			this.cmb_max_n.Location = new System.Drawing.Point(116, 203);
+			this.cmb_max_n.Location = new System.Drawing.Point(116, 183);
 			this.cmb_max_n.Name = "cmb_max_n";
 			this.cmb_max_n.Properties.Appearance.Font = new System.Drawing.Font("맑은 고딕", 9F);
 			this.cmb_max_n.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
@@ -1591,7 +1795,11 @@
             "13일",
             "14일",
             "15일",
-            "16일"});
+            "16일",
+            "17일",
+            "18일",
+            "19일",
+            "20일"});
 			this.cmb_max_n.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
 			this.cmb_max_n.Size = new System.Drawing.Size(140, 22);
 			this.cmb_max_n.TabIndex = 413;
@@ -1608,7 +1816,7 @@
 			this.labelControl11.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
 			this.labelControl11.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
 			this.labelControl11.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.HotFlat;
-			this.labelControl11.Location = new System.Drawing.Point(6, 203);
+			this.labelControl11.Location = new System.Drawing.Point(6, 183);
 			this.labelControl11.Name = "labelControl11";
 			this.labelControl11.Size = new System.Drawing.Size(110, 22);
 			this.labelControl11.TabIndex = 412;
@@ -2011,6 +2219,9 @@
 			((System.ComponentModel.ISupportInitialize)(this.srPanel9)).EndInit();
 			this.srPanel9.ResumeLayout(false);
 			this.srPanel9.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.txt_exp4.Properties)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.txt_exp3.Properties)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.txt_exp2.Properties)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.txt_exp.Properties)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmb_limitoff.Properties)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmb_stat.Properties)).EndInit();
@@ -2143,6 +2354,16 @@
 		private DevExpress.XtraEditors.LabelControl labelControl2;
 		private SilkRoad.UserControls.SRCombo cmb_gubn;
 		private SilkRoad.UserControls.SRButton btn_search;
+		private SilkRoad.UserControls.SRTextEdit txt_exp4;
+		private DevExpress.XtraEditors.LabelControl labelControl3;
+		private SilkRoad.UserControls.SRTextEdit txt_exp3;
+		private DevExpress.XtraEditors.LabelControl labelControl25;
+		private SilkRoad.UserControls.SRTextEdit txt_exp2;
+		private DevExpress.XtraEditors.LabelControl labelControl23;
+		private DevExpress.XtraGrid.Columns.GridColumn col_exp2;
+		private DevExpress.XtraGrid.Columns.GridColumn col_exp3;
+		private DevExpress.XtraGrid.Columns.GridColumn col_exp4;
+		private DevExpress.XtraGrid.Columns.GridColumn col_exp_t;
 	}
 }
 

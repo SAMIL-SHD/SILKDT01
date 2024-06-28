@@ -14,14 +14,14 @@ namespace DUTY1000
         public DataSet ds = new DataSet();
         DataProcFunc df = new DataProcFunc();
         SilkRoad.DataProc.GetData gd = new SilkRoad.DataProc.GetData();
-		string yymm = "";
-		string dept = "";
+		string yymm = "", dept = "", gubn = "";
 
-        public duty2021(string _yymm, string _dept)
+        public duty2021(string _yymm, string _dept, string _gubn)
         {
             InitializeComponent();
 			yymm = _yymm;
 			dept = _dept;
+            gubn = _gubn;
         }
 
         #region 0. Initialization
@@ -33,7 +33,6 @@ namespace DUTY1000
         private void SetCancel()
         {
 			grd1.DataSource = null;
-            //SetButtonEnable("100");
         }
 
         #endregion
@@ -41,8 +40,15 @@ namespace DUTY1000
         #region 1 Form
 
         private void duty2021_Load(object sender, EventArgs e)
-        {		
-			df.Get8030_SEARCH_EMBSDatas(dept, ds);
+        {
+            if (gubn == "3") //출장검진수당일때
+            {
+                srTitle1.SRTitleTxt = "출장검진내역";
+                gridColumn4.Caption = "출장횟수";
+                col_code.Visible = false;
+            }
+
+            df.Get8030_SEARCH_EMBSDatas(dept, ds);
 			sl_embs.Properties.DataSource = ds.Tables["8030_SEARCH_EMBS"];
 				
 			if (ds.Tables["8030_SEARCH_EMBS"].Select("CODE = '" + SilkRoad.Config.SRConfig.USID + "'").Length > 0)
@@ -75,9 +81,8 @@ namespace DUTY1000
 
         private void Proc()
         {
-			df.Get2021_SEARCH_CALLDatas(yymm, dept, ds);
+			df.Get2021_SEARCH_CALLDatas(yymm, dept, gubn, ds);
 			grd1.DataSource = ds.Tables["2021_SEARCH_CALL"];
-            //SetButtonEnable("011");
         }
 
         //저장버튼
@@ -96,11 +101,15 @@ namespace DUTY1000
 					doc_no = df.GetGWDOC_NODatas(ds);
 
 					hrow["DOC_NO"] = doc_no;
-					hrow["DOC_GUBN"] = 1;
+					hrow["DOC_GUBN"] = gubn == "3" ? 21 : 1;
 					hrow["DOC_DATE"] = yymm;
 					hrow["DOC_JSMM"] = clib.DateToText(dat_jsmm.DateTime).Substring(0, 6);
-					hrow["GW_TITLE"] = yymm.Substring(0,4)+"년 "+yymm.Substring(4,2)+"월 "+ds.Tables["2021_SEARCH_CALL"].Rows[0]["DEPT_NM"].ToString()+" CALL 내역"; // 년월 부서 CALL 내역
-					hrow["GW_REMK"] = "";
+                    string doc_tnm = yymm.Substring(0, 4) + "년 " + yymm.Substring(4, 2) + "월 ";
+                    if (gubn == "3") //출장검진일때
+                        hrow["GW_TITLE"] = doc_tnm + " 출장검진 내역"; // 년월 부서 CALL 내역
+                    else
+                        hrow["GW_TITLE"] = doc_tnm + ds.Tables["2021_SEARCH_CALL"].Rows[0]["DEPT_NM"].ToString() + " CALL 내역"; // 년월 부서 CALL 내역
+                    hrow["GW_REMK"] = "";
 					hrow["AP_TAG"] = "4";
 					hrow["LINE_CNT"] = 1;
 					if (sl_line2.EditValue != null)
@@ -176,7 +185,7 @@ namespace DUTY1000
 									+ "     ON B.DOC_NO = '" + doc_no + "' "
 									+ "    AND A.SABN = B.SABN "
 									+ "    AND A.OT_DATE = B.OT_DATE "
-									+ "  WHERE A.OT_GUBN = '1' ";
+									+ "  WHERE A.OT_GUBN = '" + gubn + "' ";
 
 						string[] qrys = new string[] { qry1 };
 						cmd.setUpdate(ref ds, null, qrys);

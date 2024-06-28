@@ -27,7 +27,7 @@ namespace DUTY1000
 			gubn = _gubn;
 			doc_no = _doc_no;
 
-			if (_gubn == "1" || _gubn == "2" || _gubn == "3" || _gubn == "4" || _gubn == "7")
+			if (_gubn == "1" || _gubn == "21" || _gubn == "2" || _gubn == "21" || _gubn == "3" || _gubn == "4" || _gubn == "7")
 			{
 				this.Width = 800;
 				btn_preview.Visible = true;
@@ -68,56 +68,73 @@ namespace DUTY1000
 					DataRow crow = ds.Tables["5062_CHK_DOC_STAT"].Rows[0];
 					if (crow["CHK_SABN1"].ToString().Trim() == SilkRoad.Config.SRConfig.USID || crow["CHK_SABN2"].ToString().Trim() == SilkRoad.Config.SRConfig.USID)
 					{
-						btn_save.Visible = true;
-						btn_return.Visible = true;
-						btn_canc.Visible = true;
-					}
+                        btn_save.Enabled = true;
+                        btn_return.Enabled = true;
+                        btn_canc.Enabled = true;
+                    }
 					else
 					{
-						btn_save.Visible = false;
-						btn_return.Visible = false;
-						btn_canc.Visible = false;
-					}
+                        btn_save.Enabled = false;
+                        btn_return.Enabled = false;
+                        btn_canc.Enabled = false;
+                    }
 				}
 				else
 				{
-					btn_save.Visible = false;
-					btn_return.Visible = false;
-					btn_canc.Visible = false;
-				}
+                    btn_save.Enabled = false;
+                    btn_return.Enabled = false;
+                    btn_canc.Enabled = false;
+                }
 			}
 
 			if (SilkRoad.Config.ACConfig.G_MSYN == "1" || SilkRoad.Config.SRConfig.USID == "SAMIL")
 			{
 				btn_admin_save.Visible = true;
 				btn_admin_canc.Visible = true;
-				btn_canc.Visible = true;
-			}
+                btn_save.Enabled = false;
+                btn_return.Enabled = false;
+                btn_canc.Enabled = true;
+            }
 
 			if (stat == "2")
 				srTitle1.SRTitleTxt = "완료문서";
 
-			if (gubn == "1")
-				xtraTabPage1.PageVisible = true;
-			else if (gubn == "2")
-				xtraTabPage2.PageVisible = true;
-			else if (gubn == "3")
-				xtraTabPage3.PageVisible = true;
-			else if (gubn == "4" || gubn == "7")
-				xtraTabPage4.PageVisible = true;
-			else if (gubn == "5")
-				xtraTabPage5.PageVisible = true;
-			else if (gubn == "6")
-				xtraTabPage6.PageVisible = true;
-			else if (gubn == "8" || gubn == "9" || gubn == "10" || gubn == "11" || gubn == "12" || gubn == "13" || gubn == "14")
-			{
-				xtraTabPage7.PageVisible = true;
-				btn_preview.Visible = true;
-			}
+            if (gubn == "1" || gubn == "21")
+                xtraTabPage1.PageVisible = true;
+            else if (gubn == "2")
+                xtraTabPage2.PageVisible = true;
+            else if (gubn == "3")
+                xtraTabPage3.PageVisible = true;
+            else if (gubn == "4" || gubn == "7")
+                xtraTabPage4.PageVisible = true;
+            else if (gubn == "5")
+                xtraTabPage5.PageVisible = true;
+            else if (gubn == "6")
+                xtraTabPage6.PageVisible = true;
+            else if (gubn == "8" || gubn == "9" || gubn == "10" || gubn == "11" || gubn == "12" || gubn == "13" || gubn == "14")
+            {
+                xtraTabPage7.PageVisible = true;
+                btn_preview.Visible = true;
+            }
 
-			if (gubn == "7")
-				xtraTabPage4.Text = "간호간병비 수당내역";
-			Proc();
+            if (gubn == "7")
+            {
+                xtraTabPage4.Text = "간호간병비 수당내역";
+                gridColumn33.Visible = true;
+                gridColumn34.Visible = true;
+            }
+
+            if (gubn == "21")
+            {
+                xtraTabPage1.Text = "출장검진내역";
+                gridColumn4.Caption = "출장횟수";
+                col_code.Visible = false;
+            }
+
+            if (gubn == "3" || gubn == "4" || gubn == "7")
+                btn_excel.Visible = true;
+
+            Proc();
         }
 
         #endregion
@@ -127,7 +144,7 @@ namespace DUTY1000
         private void Proc()
         {
 			df.Get5062_SEARCHDatas(gubn, doc_no, ds);
-			if (gubn == "1")
+			if (gubn == "1" || gubn == "21")
 				grd1.DataSource = ds.Tables["5062_SEARCH"];
 			else if (gubn == "2")
 				grd2.DataSource = ds.Tables["5062_SEARCH"];
@@ -231,9 +248,28 @@ namespace DUTY1000
 				pdfViewer1.LoadDocument(ms);
 			}
 		}
-		
-		//미리보기
-		private void btn_preview_Click(object sender, EventArgs e)
+        //엑셀변환
+        private void btn_excel_Click(object sender, EventArgs e)
+        {
+            string ex_nm = "";
+            if (gubn == "3")
+            {
+                ex_nm = "OFF,N 추가삭감내역";
+                clib.gridToExcel(grdv3, ex_nm + "_" + clib.DateToText(DateTime.Now), true);
+            }
+            else if (gubn == "4")
+            {
+                ex_nm = "밤근무수당 수당내역";
+                clib.gridToExcel(grdv4, ex_nm + "_" + clib.DateToText(DateTime.Now), true);
+            }
+            else if (gubn == "7")
+            {
+                ex_nm = "간호간병비 수당내역";
+                clib.gridToExcel(grdv4, ex_nm + "_" + clib.DateToText(DateTime.Now), true);
+            }
+        }
+        //미리보기
+        private void btn_preview_Click(object sender, EventArgs e)
 		{
 			string title = "";
 			df.GetDUTY_GWDOCDatas(doc_no, ds);
@@ -246,8 +282,14 @@ namespace DUTY1000
 					rpt_506a rpt = new rpt_506a(title);
 					rpt.DataSource = ds.Tables["5062_SEARCH"];
 					rpt.ShowPreview();
-				}
-				else if (gubn == "2")
+                }
+                else if (gubn == "21")
+                {
+                    rpt_506a1 rpt = new rpt_506a1(title);
+                    rpt.DataSource = ds.Tables["5062_SEARCH"];
+                    rpt.ShowPreview();
+                }
+                else if (gubn == "2")
 				{
 					rpt_506b rpt = new rpt_506b(title);
 					rpt.DataSource = ds.Tables["5062_SEARCH"];
@@ -267,7 +309,7 @@ namespace DUTY1000
 				}
 				else if (gubn == "7")  //간호간병비 수당
 				{
-					rpt_506d rpt = new rpt_506d(2, title);
+					rpt_506e rpt = new rpt_506e(2, title);
 					rpt.DataSource = ds.Tables["5062_SEARCH"];
 					rpt.ShowPreview();
 				}
@@ -536,7 +578,7 @@ namespace DUTY1000
             }
 		}
 
-		#endregion
+        #endregion
 
-	}
+    }
 }

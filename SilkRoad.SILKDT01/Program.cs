@@ -31,13 +31,13 @@ namespace SilkRoad.SILKDT01
 				//silkroad config 위치
 				string parentPath, fullPath;
 #if DEBUG
-                parentPath = @"D:\silkroad\";
+                parentPath = @"C:\silkroad\";
 #else
                 string drv = Application.StartupPath.Substring(0, 3);
                 if (Application.StartupPath.ToUpper().Contains("SILKROAD"))                
                     parentPath = drv + Application.StartupPath.Substring(3, Application.StartupPath.ToUpper().IndexOf("SILKROAD") + 6).Replace("\\", "");                
                 else                
-                    parentPath = @"D:\silkroad\";                
+                    parentPath = @"C:\silkroad\";                
 #endif
 
                 fullPath = parentPath + "\\config";
@@ -85,19 +85,17 @@ namespace SilkRoad.SILKDT01
 				//디버깅할때
 				SilkRoad.Config.SRConfig.WorkPlaceNo = "01";
 				SilkRoad.DAL.DataAccess.DBname = "DT01DB01";
-				SilkRoad.DAL.DataAccess.DBhost = "125.136.91.159,9245";
+                SilkRoad.DAL.DataAccess.DBhost = "125.136.91.159,9245";                                                                                                                                                                                                  
                 SilkRoad.DAL.DataAccess.DBusid = "sa";       // ID
 				SilkRoad.DAL.DataAccess.DBuspw = "Samil1234";
 				SilkRoad.Config.SRConfig.USID = "SAMIL";
-				//Config.SRConfig.USID = "21273"; //한지영
-				//Config.SRConfig.USID = "21157"; //김정은
-				//Config.SRConfig.USID = "35013"; //박수현75
-				//Config.SRConfig.USID = "52017"; //조수진
-				//Config.SRConfig.USID = "52020"; //문해미
+                //Config.SRConfig.USID = "21273"; //한지영
+                //Config.SRConfig.USID = "21157"; //김정은
+                //Config.SRConfig.USID = "24018"; //김정숙
 #endif
-			}
+            }
 
-			string qry = " SELECT * FROM SYSLINES ";
+            string qry = " SELECT * FROM SYSLINES ";
             string commdb = "COMMDB" + Config.SRConfig.WorkPlaceNo;
             SilkRoad.DataProc.GetData gd = new SilkRoad.DataProc.GetData();
             System.Data.DataRow drow = gd.GetOneRowInQuery(Convert.ToInt32(SilkRoad.DAL.DataAccess.DBtype), commdb, qry);
